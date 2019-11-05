@@ -1,0 +1,49 @@
+class Solution:
+    # 滑动串口法，双指针遍历
+    def lengthOfLongestSubstring(self, s: str) -> int:
+        # 如果s为空，则长度为0
+        if not s:
+            return 0
+        # 滑动串口为[i, j), 长度为j-i
+        i, j = 0, 1
+        # 保存最长长度
+        length = 1
+        # 当窗口右端不在s内是跳出循环
+        while j < len(s):
+            # 如果s[j]不在s[i,j]中，则将j加入窗口
+            if s[j] not in s[i:j]:
+                # length取原length值和当前窗口长度的较大值
+                length = max(length, j-i+1)
+                j += 1
+            # 若s[j]在s[i,j]中，则检查s[j]在不在是s[i+1,j]中
+            else:
+                i += 1
+        return length
+
+时间复杂度：O(n)+O(n)=O(n)  双指针i,j各遍历一边字符串
+空间复杂度：O(1)  常数级空间复杂度，只需存储i,j,length
+
+class Solution:
+    def lengthOfLongestSubstring(self, s: str) -> int:
+        if not s:
+            return 0
+        
+        i, j = 0, 1
+        length = 1
+        # 采用字典存储，查找时间O(1),值用来存储字符所对应的index
+        # 记录index的话，就可以是i直接找到相同字符的索引，而不需一一遍历
+        record = {s[0]:0}
+        while j < len(s):
+            # 如果s[j]不在record中，或者其对应的index并不在[i,j)中
+            if s[j] not in record.keys() or record[s[j]] < i:
+                record[s[j]] = j
+                length = max(length, j-i+1)
+                j += 1
+            else:
+                # s[j]在s[i,j]中，则将i值置为record[s[j]]+1
+                # 跳过s[i,j]中与s[j]相同的前面的字符
+                i = record[s[j]] + 1
+        return length
+
+时间复杂度：O(1)  只需j遍历字符串
+空间复杂度：O(n)  需保存其中不同字符的索引
