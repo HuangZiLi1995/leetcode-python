@@ -1,0 +1,15 @@
+class Solution:
+    def twoSum(self, nums: List[int], target: int) -> List[int]:
+        # 采用字典记录查找过的数字，O(1)的查找时间
+        record = {}
+        # 循环遍历数字
+        for i in range(len(nums)):
+            complement = target - nums[i]
+            # 判断字典中是否存在target-nums[i]
+            if complement in record.keys():
+                return [record[complement], i]
+            # 将查找过的数以nums[i]:i的形式储存在字典中
+            record[nums[i]] = i
+
+时间复杂度：O(n)*O(1) = O(n)  遍历数组*查找
+空间复杂度：O(n)  开辟了与数组长度相同的的空间存储字典
