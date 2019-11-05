@@ -23,6 +23,8 @@ class Solution:
 时间复杂度：O(n)+O(n)=O(n)  双指针i,j各遍历一边字符串
 空间复杂度：O(1)  常数级空间复杂度，只需存储i,j,length
 
+
+下面为为优化的滑动窗口法，用字典记录字符的index，以使得i可以直接定位，避免了遍历
 class Solution:
     def lengthOfLongestSubstring(self, s: str) -> int:
         if not s:
