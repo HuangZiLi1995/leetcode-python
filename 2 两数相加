@@ -34,6 +34,7 @@ class Solution:
 时间复杂度：O(n)+O(n)+O(n)=O(n)  读取l1+读取l2+存储l
 空间复杂度：O(n)+O(n)+O(n)+O(n)=O(n)  存储l1_str+存储l2_str+存储l_str+链表l
 
+下面为直接在链表上计算，减少了空间复杂度
 class Solution:
 	# 分别计算每一位上的和，直接存储在链表中
     def addTwoNumbers(self, l1: ListNode, l2: ListNode) -> ListNode:
