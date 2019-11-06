@@ -1,0 +1,27 @@
+将z的循环部分展开，即可发现共有2numRow-2行
+将字符按序填入这2numRow-2行，再按行拼接起来
+
+class Solution:
+    def convert(self, s: str, numRows: int) -> str:
+        if (not s) or (numRows == 1) :
+            return s
+        # 将z的循环部分展开，即共有2numRow-2行
+        num = 2 * numRows - 2
+        temp_row = [[] for i in range(num)]
+        for i, j in enumerate(s):
+            temp_row[i % num].append(j)
+        # 第一行只对应1行
+        res = ''.join(temp_row[0])
+        # 中间的行对应两行
+        for i in range(1, numRows-1):
+            for j in range(len(temp_row[num-i])):
+                res += temp_row[i][j] + temp_row[num-i][j]
+            # 先加入元素的行可能比后加入元素的行多一个元素
+            if len(temp_row[i]) != len(temp_row[num-i]):
+                res += temp_row[i][-1]
+        # 最后一行只对应一行
+        res += ''.join(temp_row[numRows-1])
+        return res
+        
+时间复杂度O(n): 遍历字符串，将其按行放置O(n)+再将所有元素拼接O(n)
+空间复杂度O(n): 遍历字符串，将其按行储存在列表中O(n)+再将所有元素拼接在res中O(n)
