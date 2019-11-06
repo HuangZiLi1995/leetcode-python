@@ -1,0 +1,60 @@
+动态规划：[i,i+l]为回文串当且仅当两端相同，而且去掉两端的内部为回文串
+         较长的回文串依赖较短的回文串的判断，故首先循环长度
+
+class Solution:
+    def longestPalindrome(self, s: str) -> str:
+        # memo存储[i,j]是否为回文串
+        memo = [[False]*len(s) for _ in range(len(s))]
+        res = ''
+        # 较长的回文串依赖较短的回文串的判断，故首先循环长度
+        for l in range(len(s)):
+            # 滑动[i, i+l]的窗口
+            for i in range(len(s)-l):
+                # 长度为1时，为回文串
+                if l == 0: 
+                    memo[i][i] = True
+                    res = s[i]
+                # 长度为2时，如果s[i]与s[i+1]相同则为回文串
+                elif l == 1 and s[i] == s[i+1]:
+                    memo[i][i+1] = True
+                    res = s[i:i+2]
+                # 长度大于2时，[i,i+l]为回文串当且仅当两端相同，而且去掉两端的内部为回文串
+                else:
+                    memo[i][i+l] = memo[i+1][i+l-1] and s[i]==s[i+l]
+                    if memo[i][i+l]: res = s[i:i+l+1]
+        return res
+
+时间复杂度O(n2): 遍历长度0-len(s)(O(n))*滑动窗口遍历字符串
+空间复杂度O(n2): memo为len(s)*len(s)矩阵
+
+中心扩展：以i为中心向两端扩展，若两端相同，则继续扩展
+         以i，i+1为中心向两端扩展，若两端相同，则继续扩展
+         
+class Solution:
+    def longestPalindrome(self, s: str) -> str:
+        # 若s为空，则返回s
+        if not s:
+            return s
+        # 单个字符为回文串，故初始化为s[0]
+        res = s[0]
+        # 遍历字符，以不同字符为中心
+        for i in range(len(s)):
+            # 首先以i为中心扩展
+            # l为向左右扩展的长度
+            l = 1
+            # 当i-l和i+l在字符串中时，且两端为相同字符，说明为回文串，则继续扩展
+            while i-l>=0 and i+l<len(s) and s[i-l]==s[i+l]:
+                l += 1
+            l -= 1
+            # 如果长度长与res，则更新res
+            if 2*l+1>len(res): res = s[i-l:i+l+1]
+            # 以i，i=1位中心扩展
+            l = 0
+            while i-l>=0 and i+1+l<len(s) and s[i-l]==s[i+l+1]:
+                l += 1
+            l -= 1
+            if 2*l+2>len(res): res = s[i-l:i+l+2]
+        return res
+
+时间复杂度O(n2)：遍历中心字符O(n)*向两端扩展O(n/2)
+空间复杂度O(n):  需存储res
