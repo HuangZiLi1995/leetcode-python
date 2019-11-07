@@ -1,0 +1,32 @@
+将int转换为str，检查其是否为回文字符串
+class Solution:
+    def isPalindrome(self, x: int) -> bool:
+        # 若x<0则不是回文数
+        if x < 0: return False
+        s = str(x)
+        n = len(s)
+        # 检查是否为回文字符串，只需检查一半
+        for i in range(n//2):
+            # 如果对应字符不等，则返回false
+            if s[i] != s[n-1-i]:
+                return False
+        return True
+时间复杂度O(n)
+空间复杂度O(n)
+
+直接处理int，用x%10，x//10分离个位与高位
+用rev_x存储反转后的数字，x储存未反转的数字
+当输入数位偶数为时，rev_x的位数与x的位数相同时反转结束即rev_x==x
+当输入数位为奇数时，rev_x的位数比x的位数多一位即rev_x>x
+故反转结束的条件选为rev_x<x
+class Solution:
+    def isPalindrome(self, x: int) -> bool:
+        if x<0 or (x%10==0 and x!=0): return False
+        rev_x = 0
+        while x > rev_x:
+            rev_x = rev_x*10 + x%10
+            x = x // 10
+        if rev_x == x or rev_x//10 == x: return True
+        return False
+时间复杂度O(n)
+空间复杂度O(n)
