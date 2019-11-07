@@ -1,0 +1,59 @@
+去掉开头空白字符后逐个判断各个字符
+先判断第一个字符是否为符号
+再查找紧接着的数字字符
+
+class Solution:
+    def myAtoi(self, string: str) -> int:
+        INT_MAX, INT_MIN = 2**31-1, -2**31
+        S1 = set(['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'])
+        S2 = set(['-','+'])
+        # 去掉左端的空白字符
+        string = string.lstrip()
+        # 存储提取出来的字符
+        new_string = ''
+        if not string or (string[0] not in S1 and string[0] not in S2):
+            return 0
+        # 判断第一个字符是否为'-', '+'
+        if string[0] in S2:
+            if string[0] == '-':
+                new_string += '-'
+            string = string[1:]
+        # 找到紧接着的数字
+        for s in string:
+            if s in S1:
+                new_string += s
+            else:
+                break
+        # 输出
+        if new_string in ['-', '']:
+            return 0
+        num = int(new_string)
+        if num > INT_MAX:
+            return INT_MAX
+        elif num < INT_MIN:
+            return INT_MIN
+        else:
+            return num
+            
+时间复杂度O(n)
+空间复杂度O(n)
+
+使用正则表达式
+^：匹配开头
+[\-\+]：匹配其中一个
+?：前一个字符可以没有
+\d：匹配一个数字
++：前一个字符可以匹配多个
+
+class Solution:
+    def myAtoi(self, string: str) -> int:
+        string = string.lstrip()
+        res = re.findall('^[\-\+]?\d+', string)
+        if not res: return 0
+        res = int(res[0])
+        if res>2**31-1: return 2**31-1
+        if res<-2**31: return -2**31
+        return res
+
+时间复杂度O(n)
+空间复杂度O(n)
