@@ -1,0 +1,14 @@
+双指针，两块板之间的存储量受限于其中较短的板和两板之间的距离
+首先考虑距离最远的两块板，在逐渐缩短距离
+class Solution:
+    def maxArea(self, height: List[int]) -> int:
+        v = 0
+        i, j = 0, len(height)-1
+        while i < j:
+            if height[i] > height[j]:
+                v = max(v, height[j]*(j-i))
+                j -= 1
+            else:
+                v = max(v, height[i]*(j-i))
+                i += 1
+        return v
