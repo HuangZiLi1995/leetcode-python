@@ -1,0 +1,41 @@
+将int转换为str，使用str切片进行反转
+
+class Solution:
+    def reverse(self, x: int) -> int:
+        # 将x转换为str
+        x_str = str(x)
+        # 如果x<0，则将保留符号位，将剩余的数进行反转
+        if x < 0:
+            x_str = x_str[0] + x_str[:0:-1]
+        # 如果x>0,则将整个字符串进行反转
+        else:
+            x_str = x_str[::-1]
+        # 将反转后的字符串转换为int
+        new_x = int(x_str)
+        # 检查是否溢出
+        return new_x if -2**31<=new_x<2**31 else 0
+        
+时间复杂度O(n)
+空间复杂度O(n)
+
+直接对数字进行处理，采用x%10提取x的个位，x//10提取x中个位之外的位
+
+class Solution:
+    def reverse(self, x: int) -> int:
+        # 只有数值部分需要反转，先去掉符号
+        abs_x = abs(x)
+        # 用来保存反转后的值
+        new_x = 0
+        while abs_x:
+            # 提取剩余x的个位，并将其添加到new_x的末尾
+            new_x = new_x*10 + abs_x%10
+            # 提取个位后所剩余的数字
+            abs_x = abs_x // 10
+        if x < 0:
+            new_x = -new_x
+        if -2**31 <= new_x < 2**31:
+            return new_x
+        return 0
+
+时间复杂度O(n)：需进行x位数此次的计算
+空间复杂度O(1)
