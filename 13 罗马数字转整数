@@ -1,0 +1,22 @@
+首先建立罗马数字转数字的查找表
+罗马字符最多两个连接代表一个数字
+两个字符的罗马数字的优先级高于单个字符，故先查找由两个字符构成的罗马数字
+class Solution:
+    def romanToInt(self, s: str) -> int:
+        # 建立罗马数转数字查找表
+        romans = {"M":1000, "CM":900, "D":500, "CD":400, 
+                  "C":100, "XC":90, "L":50, "XL":40, 
+                  "X":10, "IX":9, "V":5, "IV":4, "I":1}
+        # 从第一个字符开始查找
+        res, i = 0, 0
+        while i < len(s):
+            # 罗马字符最多两个连接代表一个数字，两个字符的优先查找
+            if s[i:i+2] in romans.keys():
+                res += romans[s[i:i+2]]
+                i += 2
+            else:
+                res += romans[s[i]]
+                i += 1
+        return res
+时间复杂度O(n)：遍历字符串
+空间复杂度O(1)
