@@ -1,0 +1,32 @@
+双重循环+双指针 方法和 15 三数之和类似，可参考三数之和
+
+查找表：
+将四数之和拆分为2个两数之和
+首先创建两数的查找表
+然后在查找表中查找两个“两数”的和
+class Solution:
+    def fourSum(self, nums: List[int], target: int) -> List[List[int]]:
+        if len(nums) < 4:
+            return []
+        # 创建查找表
+        record = {}
+        for a in range(len(nums)-1):
+            for b in range(a+1, len(nums)):
+                if nums[a]+nums[b] in record.keys():
+                    record[nums[a]+nums[b]].append([a, b])
+                else:
+                    record[nums[a]+nums[b]] = [[a, b]]
+        re = []
+        # 读取查找表
+        for i in record.keys():
+            j = target - i
+            if j in record.keys():
+                for a, b in record[i]:
+                    for c, d in record[j]:
+                        if (a not in [c, d]) and (b not in [c, d]):
+                            pair = sorted([nums[a], nums[b], nums[c], nums[d]])
+                            if pair not in re:
+                                re.append(pair)
+        return re
+时间复杂度O(n2)+O(N)：两层循环创建两数之和的查找表+遍历查找表
+空间复杂度O(n2)：查找表的大小
