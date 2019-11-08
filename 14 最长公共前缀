@@ -1,0 +1,44 @@
+从左向右判断字符串各个位置字符是否相同
+class Solution:
+    def longestCommonPrefix(self, strs: List[str]) -> str:
+        if not strs: return ''
+        count = ''
+        # i的取值范围为最短字符串长度，遍历字符串中字符
+        for i in range(min([len(s) for s in strs])):
+            # 遍历字符串
+            for j in range(1, len(strs)):
+                # 判断对应位置是否相等
+                if strs[j][i] != strs[0][i]:
+                    return count
+            count += strs[0][i]
+        return count
+时间复杂度O(n*len)：字符串个数*各字符串长度（需遍历所有字符）
+空间复杂度O(1)：需存储一个字符串
+
+二分法，双指针
+class Solution:
+    def longestCommonPrefix(self, strs: List[str]) -> str:
+        if not strs: return ''
+        n = min([len(s) for s in strs])
+        # 双指针，二分法
+        l, r = 0, n
+        # 区间[l,r),l左边为相同字符
+        while l < r:
+            # 用flag记录是否s[0:m]是否相等
+            flag = True
+            m = (l+r+1)//2
+            for s in strs[1:]:
+                if s[:m] != strs[0][:m]:
+                    flag = False
+                    break
+            # 如果flag=True则说明m左边字符相同
+            # 则l=m (l的设定即为左边值相同，与m一致)
+            if flag:
+                l = m
+            # flag=False则说明m左边字符至少有一个不相同
+            # 则去r=m-1
+            else:
+                r = m-1
+        return strs[0][:l]
+时间复杂度O(n)*O(len)*O(log(len)):每次比较O(n)*O(len),需要进行O(log(len))次比较
+空间复杂度O(1)
