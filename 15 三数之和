@@ -1,0 +1,43 @@
+第一个数循环遍历列表，第二、三个数双指针遍历
+class Solution:
+    def threeSum(self, nums: List[int]) -> List[List[int]]:
+        # 当长度小于2是不存在
+        if len(nums) < 3:
+            return []
+        # 排序
+        nums.sort()
+        re = []
+        # 选择第一个数
+        for a in range(len(nums)-2):
+            # 若第一个数大于0，则sum不可能等于0
+            if nums[a] > 0:
+                break
+            # a不能重复
+            if (a != 0) and (nums[a] == nums[a-1]):
+                    continue
+            # 双指针，指向a之后的头和尾
+            b, c = a+1, len(nums)-1
+            while b < c:
+                # 当sum==0时，b,c都需移动一位
+                if nums[a]+nums[b]+nums[c] == 0:
+                    # 将sum==0的三元组填入结果中
+                    re.append([nums[a], nums[b], nums[c]])
+                    b += 1
+                    while (b < c) and (nums[b] == nums[b-1]):
+                        b += 1
+                    c -= 1
+                    while (c > b ) and (nums[c] == nums[c+1]):
+                        c -= 1
+                # 当sum<0时，需增加sum，及b向前移一位
+                elif nums[a]+nums[b]+nums[c] < 0:
+                    b += 1
+                    while (b < c) and (nums[b] == nums[b-1]):
+                        b += 1
+                # 当sum>0时，需减少sum，即c移动一位
+                else:
+                    c -= 1
+                    while (c > b) and (nums[c] == nums[c+1]):
+                        c -= 1
+        return re
+时间复杂度O(n2)： a遍历列表O(n)*b,c双指针遍历列表
+空间复杂度O(1)
