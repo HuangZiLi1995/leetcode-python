@@ -1,0 +1,29 @@
+括号必须成对出现，成对消失
+括号之间不能交叉，及必须内部括号先配对，才能配对外部括号
+class Solution:
+    def isValid(self, s: str) -> bool:
+        record = []
+        # 遍历字符
+        for i in s:
+            # 如果为左括号则加入record
+            if i in ['(', '{', '[']:
+                record.append(i)
+            else:
+                # 如果为右括号，而record无字符，即无与之相对的左括号，则False
+                if not record:
+                    return False
+                # 检查record中最后一个元素是否为与之对应的左括号
+                if i == ')' and record[-1] == '(':
+                    record.pop()
+                elif i == '}' and record[-1] == '{':
+                    record.pop()
+                elif i == ']' and record[-1] == '[':
+                    record.pop()
+                else:
+                    return False
+        # 如果遍历完字符，record仍有元素，则说明存在过多的左括号，则False
+        if record:
+            return False
+        return True
+  时间复杂度O(n)：遍历字符串
+  空间复杂度O(n)：存储左括号
