@@ -1,0 +1,44 @@
+# 迭代
+class Solution:
+    def mergeTwoLists(self, l1: ListNode, l2: ListNode) -> ListNode:
+        # 设置虚拟头结点，方便处理链表的头
+        dummyHead = ListNode(None)
+        l = dummyHead
+        # 当l1和l2均不为空时
+        while l1 and l2:
+            # 当l1.val<l2.val时，将l1接入到排序的链表
+            # 将l和l1前进一个节点
+            if l1.val < l2.val:
+                l.next = l1
+                l1 = l1.next
+            # 当l1.val>=l2.val时，将l2接入到排序的链表
+            # 将l和l2前进一个节点
+            else:
+                l.next = l2
+                l2 = l2.next
+            l = l.next
+        # 将剩余的节点接在排序链表上
+        if l1:
+            l.next = l1
+        elif l2:
+            l.next = l2
+        
+        return dummyHead.next
+# 时间复杂度O(n+m)：需遍历两个链表
+# 空间复杂度O(1)
+
+# 递归
+class Solution:
+    def mergeTwoLists(self, l1: ListNode, l2: ListNode) -> ListNode:
+        # 终止条件：如果l1或者l2中有一个为空，则返回另一个
+        if not l1: return l2
+        if not l2: return l1
+        # 将值较小的节点设为头结点
+        if l1.val < l2.val:
+            l1.next = self.mergeTwoLists(l1.next, l2)
+            return l1
+        else:
+            l2.next = self.mergeTwoLists(l1, l2.next)
+            return l2
+# 时间复杂度O(n+m)：需遍历两个链表
+# 空间复杂度O(n+m)：需调用O(n+m)函数,而调用递归函数需压入栈中
