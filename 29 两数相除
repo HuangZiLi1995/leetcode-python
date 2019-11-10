@@ -1,0 +1,27 @@
+# 用左移来代表*2
+class Solution:
+    def divide(self, dividend: int, divisor: int) -> int:
+        res = 0
+        # 记录正负号
+        flag = 1 if dividend*divisor>=0 else -1
+        # 取绝对值
+        dividend, divisor = abs(dividend), abs(divisor)
+        # 当dividend比divisor大时说明还能除
+        while dividend >= divisor:
+            # 用r来记录divisor扩大的倍数
+            # 用d来记录divisor左移后的数值
+            r, d = 1, divisor
+            # 当dividend比d大是说明d还能增大
+            while dividend >= d:
+                r = r << 1
+                d = d << 1
+            # d > dividend了，回溯一位
+            r = r >> 1
+            d = d >> 1
+            # 将结果加上
+            res += r
+            dividend -= d
+        res = res * flag
+        return res if -2**31<=res<2**31 else 2**31-1
+# 时间复杂度O(log(n))
+# 空间复杂度O(1)
