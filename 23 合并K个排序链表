@@ -1,0 +1,27 @@
+# 使用最小堆存储每条链上的节点，每次弹出最小结点，并压如其下一节点
+class Solution:
+    def mergeKLists(self, lists: List[ListNode]) -> ListNode:
+        if not lists:
+            return None
+        # 采用最小堆
+        import heapq
+        heap = []
+        # 首先将每个链表的头放入最小堆中
+        # 加入序号是为了val相同时可以比较
+        for i, node in enumerate(lists):
+            if node:
+                heapq.heappush(heap, (node.val, i, node))
+        # 建立虚拟头结点
+        head = ListNode(None)
+        cur = head
+        # 当堆中还有元素时
+        while heap:
+            # 弹出最小结点
+            _, i, smallest = heapq.heappop(heap)
+            # 如果最小节点还有next，则将其压如栈中
+            if smallest.next:
+                heapq.heappush(heap, (smallest.next.val, i, smallest.next))
+            cur.next = smallest
+            cur = cur.next
+        return head.next
+# 时间复杂度O(nmlog(n))：需比较链长度n* 链数目m次* 最小推排序O(log(n))
