@@ -1,0 +1,68 @@
+# 回溯法
+class Solution:
+    def generateParenthesis(self, n: int) -> List[str]:
+        if n == 0: return []
+        # 回溯函数：l：剩余左括号的个数，r：剩余右括号的个数，record：字符
+        def backtrack(l, r, record=''):
+            # 若l和r为0则左右括号用完，记录字符
+            if l == 0 and r == 0: 
+                res.append(record)
+            # 如果l==0则只能填入右括号
+            elif l == 0: 
+                backtrack(l, r-1, record+')')
+            # 如果l==r，这说明已填入的左右括号数相同，只能填入右括号
+            elif l == r: 
+                backtrack(l-1, r, record+'(')
+            else:
+                backtrack(l-1, r, record+'(')
+                backtrack(l, r-1, record+')')
+            return
+        res = []
+        backtrack(n, n)
+        return res
+
+# 记忆化搜索
+class Solution:
+    def generateParenthesis(self, n: int) -> List[str]:
+        if n == 0: return []
+        # 记录一定数量的左括号与右括号所能产生的组合
+        record = {}
+        # 当n=0，字符串为空
+        record[(0, 0)] = ['']
+        # l为剩余左括号的数量，r为剩余右括号的数量
+        # 因为左括号必须在右括号之前填入，所以r>=l
+        def dp(l, r):
+            # 如果在记录中，则直接返回该条记录
+            if (l, r) in record.keys():
+                return record[(l, r)]
+            dplr = []
+            # 如果左括号数>右括号数，则可填入填入右括号
+            if l < r:
+                for item in dp(l, r-1):
+                    dplr.append(')' + item)
+            # 如果剩余左括号数大于0，则可填入左括号
+            if l > 0:
+                for item in dp(l-1, r):
+                    dplr.append('(' + item)
+            # 记录该条记录
+            record[(l, r)] = dplr
+            return record[(l, r)]
+        dp(n, n)
+        return record[(n, n)]
+
+# 自底向上、动态规划
+# 对于n对括号，可以将其看成n-1对+1对
+# 再将n-1对拆成2部分：left：0->n-1和right：n-1->0
+# 将其填入（left）right中
+# 另外由于left与right的对称性，left（right）会与之重复，使用一个即可
+class Solution:
+    def generateParenthesis(self, n: int) -> List[str]:
+        if n == 0: return []
+        record = [[] for _ in range(n+1)]
+        record[0], record[1] = [''], ['()']
+        for i in range(2, n+1):
+            for j in range(i):
+                for l in record[j]:
+                    for r in record[i-1-j]:
+                        record[i].append('('+l+')'+r)
+        return record[n]
