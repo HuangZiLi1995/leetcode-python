@@ -1,0 +1,31 @@
+# 迭代
+# 每次取k个节点，倒序连接
+class Solution:
+    def reverseKGroup(self, head: ListNode, k: int) -> ListNode:
+        # 创建虚拟头结点
+        dummyHead = ListNode(None)
+        dummyHead.next = head
+        # temp遍历新链表，cur遍历旧链表
+        temp, cur = dummyHead, head
+        while cur:
+            count = 0
+            group = []
+            # 取出链表的前k个
+            while (count!=k) and cur:
+                group.append(cur)
+                cur = cur.next
+                count += 1
+            # 如果不足k个，则将剩余链表接上，break
+            if count != k:
+                temp.next = group[0]
+                break
+            # 如果有k个，则倒序接在新链表上
+            while group:
+                temp.next = group.pop()
+                temp = temp.next
+            # 如果刚好为k的倍数，需将最后节点的next置为None
+            if not cur:
+                temp.next = None
+        return dummyHead.next
+# 时间复杂度O(n):遍历链表
+# 空间复杂度O(k):存储k个地址
