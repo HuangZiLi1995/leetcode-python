@@ -1,0 +1,15 @@
+class Solution:
+    def removeElement(self, nums: List[int], val: int) -> int:
+        if not nums: return 0
+        i = 0
+        # 遍历列表
+        while i < len(nums):
+            # 如果第i个数与val相同，则pop
+            if nums[i] == val:
+                nums.pop(i)
+            # 否则前进以为
+            else:
+                i += 1
+        return len(nums)
+# 时间复杂度O(n)
+# 空间复杂度O(1)
