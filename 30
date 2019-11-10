@@ -1,0 +1,42 @@
+# 遍历s中每隔字符，匹配以该字符为头，长度为所有单词长度之和
+class Solution:
+    def findSubstring(self, s: str, words: List[str]) -> List[int]:
+        if not words: return []
+        word_len = len(words[0])
+        min_len = word_len * len(words)
+        # 当s的长度小于所有word的长度之和时返回空
+        if len(s) < min_len: return []
+        # 将words hash化，并记录各word的个数
+        record = {}
+        for word in words:
+            if word not in record.keys():
+                record[word] = 1
+            else:
+                record[word] += 1
+        # 递归函数，输入s为长度为总word长度之和
+        # 每次匹配一个单词，减少一个单词长度
+        def match(s):
+            # 如果s为空，则匹配完成，返回True
+            if not s: return True
+            # 取出一个单词
+            word = s[:word_len]
+            # 记录是否匹配成功
+            flag = False
+            # 在record中查找该单词
+            if word in record.keys() and record[word] > 0:
+                # 在record中去掉该单词
+                record[word] -= 1
+                # 匹配下一个单词，并记录返回结果
+                flag = match(s[word_len:])
+                # 还原record
+                record[word] += 1
+            # 返回匹配结果
+            return flag
+        res = []
+        # 遍历每一个字符，匹配以该字符为头，长度为words长度之和
+        for i in range(len(s)-min_len+1):
+            if match(s[i:i+min_len]):
+                res.append(i)
+        return res
+# 时间复杂度O(n*m*len)：遍历字符串O(n) * 每次匹配长度O(m*len)
+# 空间复杂度O(m):将所有单词hash保存
