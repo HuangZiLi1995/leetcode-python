@@ -1,0 +1,15 @@
+class Solution:
+    def removeDuplicates(self, nums: List[int]) -> int:
+        if not nums: return 0
+        # 第一个数一定不同，从第二个数开始
+        i = 1
+        while i < len(nums):
+            # 如果第i个数与前一个数相同，则pop这个数
+            if nums[i] == nums[i-1]:
+                nums.pop(i)
+            # 不同则将i指向着这个
+            else:
+                i += 1
+        return len(nums)
+# 时间复杂度O(n)
+# 空间复杂度O(1)
