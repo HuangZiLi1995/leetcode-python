@@ -1,0 +1,24 @@
+# 迭代
+class Solution:
+    def swapPairs(self, head: ListNode) -> ListNode:
+        # 建立虚拟头结点
+        dummyHead = ListNode(None)
+        dummyHead.next = head
+        cur = dummyHead
+        # 当剩余节点大于等于两个时才能交换
+        while cur.next and cur.next.next:
+            cur.next, cur.next.next, cur.next.next.next = cur.next.next, cur.next, cur.next.next.next
+            cur = cur.next.next
+        return dummyHead.next
+# 时间复杂度O(n):遍历链表
+# 空间复杂度O(1)
+
+# 递归
+# 如果剩余节点数大于等于2，则交换这前两个节点
+class Solution:
+    def swapPairs(self, head: ListNode) -> ListNode:
+        if not head or not head.next: return head
+        new_head, head.next.next, head.next = head.next, head, self.swapPairs(head.next.next)
+        return new_head
+# 时间复杂度O(n):遍历链表
+# 空间复杂度O(n):n//2次递归
