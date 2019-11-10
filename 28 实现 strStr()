@@ -1,0 +1,25 @@
+# python自带函数
+class Solution:
+    def strStr(self, haystack: str, needle: str) -> int:
+        return haystack.find(needle)
+
+# 先匹配第一个字符，在逐个匹配剩余字符
+class Solution:
+    def strStr(self, haystack: str, needle: str) -> int:
+        if not needle: return 0
+        # 遍历字符串，剩余字符串长度应大于needle
+        for i in range(len(haystack)-len(needle)+1):
+            # 若第一个字符相等，则开始比较
+            if haystack[i] == needle[0]:
+                # 记录是否匹配成功
+                flag = True
+                # 逐个比较
+                for j in range(1, len(needle)):
+                    if haystack[i+j] != needle[j]:
+                        flag = False
+                        break
+                # 如果匹配成功，返回i
+                if flag: return i
+        return -1
+# 时间复杂度O(n*m): 遍历haystack:O(n)*遍历needle:O(m)
+# 空间复杂度O(1)
