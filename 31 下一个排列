@@ -1,0 +1,36 @@
+# 几个数字组成一个数，如果其为这么数字从大到小排列组成，则其为最大
+# 故考虑从数字末尾开始检查数字是否递增或相等
+# 若找到左边数字小于右边则可增大
+# 将该位上的数替换成比它大但最接近它的数，其右边的数从小到大排序，组成最小的数即可
+# 因为开始已经检查过递增，所以将右边的数倒序即可
+class Solution:
+    def nextPermutation(self, nums: List[int]) -> None:
+        """
+        Do not return anything, modify nums in-place instead.
+        """
+        # 记录是否可增大
+        flag = False
+        # 从倒数第二个开始检查
+        for i in range(len(nums)-2, -1, -1):
+            # 若找到左边小于右边的数
+            if nums[i] < nums[i+1]:
+                # 记录可以增大
+                flag = True
+                j = i+1
+                # 查找右边小于或等于它的第一个数
+                while j < len(nums):
+                    if nums[j] <= nums[i]:
+                        break
+                    j += 1
+                # 退回一位，找到比目标大且最接近的数
+                j -= 1
+                # 交换两数
+                nums[i], nums[j] = nums[j], nums[i]
+                # 将右边的数倒序
+                nums[:] = nums[:i+1]+nums[len(nums)-1:i:-1]
+                break
+        # 如果不能增大，则倒序组成最小数
+        if not flag: nums[:] = nums[::-1]
+        return
+# 时间复杂度O(n):遍历nums查找减小的数O(n)+遍历右边的nums查找要交换的数O(n)+倒序
+# 空间复杂度O(1)
