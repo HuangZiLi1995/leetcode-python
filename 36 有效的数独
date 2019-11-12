@@ -1,0 +1,25 @@
+# 遍历board，记录行，列，方框中出现的数字
+class Solution:
+    def isValidSudoku(self, board: List[List[str]]) -> bool:
+        # 记录行
+        rows = [[False]*10 for _ in range(9)]
+        # 记录列
+        cols = [[False]*10 for _ in range(9)]
+        # 记录方框
+        boxes = [[False]*10 for _ in range(9)]
+        for i in range(9):
+            for j in range(9):
+                if board[i][j] != '.':
+                    # 当前位置的数字
+                    n = int(board[i][j])
+                    # 方框的索引
+                    m = i//3+j//3*3
+                    # 如果已经为True,说明有重复，返回False
+                    if rows[i][n] or cols[j][n] or boxes[m][n]:
+                        return False
+                    # 更新行，列，方框
+                    rows[i][n] = True
+                    cols[j][n] = True
+                    boxes[m][n] = True
+        # 全部通过返回True
+        return True
