@@ -1,0 +1,21 @@
+# 回溯法，与第39题类似
+class Solution:
+    def combinationSum2(self, candidates: List[int], target: int) -> List[List[int]]:
+        if not candidates:
+            return []        
+        def backtrack(candidates, target, record=[]):
+            if target == 0:
+                res.append(record)
+                return
+            for i in range(len(candidates)):
+                # 排除该位上相同的数
+                if (i != 0) and (candidates[i] == candidates[i-1]):
+                    continue
+                if candidates[i] <= target:
+                    backtrack(candidates[i+1:], target-candidates[i], record+[candidates[i]])
+                else:
+                    break
+        candidates.sort()
+        res = []
+        backtrack(candidates, target)
+        return res
