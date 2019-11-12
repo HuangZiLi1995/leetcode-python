@@ -1,0 +1,49 @@
+# 回溯法
+class Solution:    
+    def solveSudoku(self, board: List[List[str]]) -> None:
+        """
+        Do not return anything, modify board in-place instead.
+        """
+        # 用来记录行，列，方框中的数
+        rows = [[False]*10 for i in range(9)]
+        cols = [[False]*10 for i in range(9)]
+        boxes = [[False]*10 for i in range(9)]
+        # 记录原有的数
+        for i in range(9):
+            for j in range(9):
+                if board[i][j] != '.':
+                    n = int(board[i][j])
+                    rows[i][n] = True
+                    cols[j][n] = True
+                    boxes[i//3+j//3*3][n] = True
+        # 递归函数，x,y为查找的起点
+        def backtrack(x, y):
+            for i in range(x, 9):
+                a = y if i==x else 0
+                for j in range(0, 9):
+                    # 如果该位置为空
+                    if board[i][j] == '.':
+                        # i为行索引，j为列索引，boxi为方框索引
+                        boxi = i//3+j//3*3
+                        # 尝试填入数字
+                        for n in range(1, 10):
+                            # 如果可填入
+                            if not rows[i][n] and not cols[j][n] and not boxes[boxi][n]:
+                                # 更新board，行，列，方框
+                                board[i][j] = str(n)
+                                rows[i][n] = True
+                                cols[j][n] = True
+                                boxes[boxi][n] = True
+                                # 进入下一个递归
+                                if backtrack(i, j): return True
+                                # 回溯
+                                board[i][j] = '.'
+                                rows[i][n] = False
+                                cols[j][n] = False
+                                boxes[boxi][n] = False
+                        # 如果尝试完9个数均不可行，则返回False
+                        return False
+            # 如果查找不到空，则已填完
+            return True
+        backtrack(0, 0)
+        return
