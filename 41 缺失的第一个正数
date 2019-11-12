@@ -1,0 +1,15 @@
+# 将nums hash化
+# 可除其中小于等于0的数，和大于len(nums)的数
+class Solution:
+    def firstMissingPositive(self, nums: List[int]) -> int:
+        n = len(nums)
+        record = set()
+        for num in nums:
+            if num<1 or num>n: continue
+            record.add(num)
+        # 逐一递增检查res是否在record中
+        res = 1
+        while res in record: res += 1
+        return res
+# 时间复杂度O(n):遍历nums转换为set O(n)+检查res是否在set中 O(n)
+# 空间复杂度O(n):存储set
