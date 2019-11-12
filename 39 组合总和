@@ -1,0 +1,26 @@
+# 回溯法
+# 先排序，方便判断大小和剪枝
+# 逐个加入元素
+class Solution:
+    def combinationSum(self, candidates: List[int], target: int) -> List[List[int]]:
+        if not candidates:
+            return []
+        # 递归函数，回溯，target为剩下的和，record为已经加入数组的元素
+        def backtrack(candidates, target, record=[]):
+            # 如果target为0，则说明已找到和为target的数组
+            if target == 0:
+                res.append(record)
+                return
+            # 循环遍历数据，将其中如record中
+            for i in range(len(candidates)):
+                # 如果元素能加入则加入，否则break
+                if target >= candidates[i]:
+                    # 递归，因为可以重复，则从当前索引开始朝招
+                    backtrack(candidates[i:], target-candidates[i], record+[candidates[i]])
+                else:
+                    break
+        # 排序
+        candidates.sort()
+        res = []
+        backtrack(candidates, target)
+        return res
