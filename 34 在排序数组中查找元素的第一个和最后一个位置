@@ -1,0 +1,32 @@
+# 分两次查找左边界和右边界
+class Solution:
+    def searchRange(self, nums: List[int], target: int) -> List[int]:
+        if not nums: return [-1, -1]
+        res = []
+        # 双指针，二分法
+        l, r = 0, len(nums)
+        # 查找左边界
+        while l < r:
+            m = (l+r) // 2
+            # 当nums[m]=target时，更新r即将针织左右
+            if nums[m] >= target:
+                r = m
+            else:
+                l = m+1
+        # 如果nums[l]!=target，则数组中不存在target，返回[-1,-1]
+        if l==len(nums) or nums[l]!=target: return [-1, -1]
+        # 加入左边界
+        res.append(l)
+        l, r = 0, len(nums)
+        # 查找右边界
+        while l < r:
+            m = (l+r) // 2
+            # 当nums[m]==target时，将l指针右移
+            if nums[m] > target:
+                r = m
+            else:
+                l = m+1
+        res.append(l-1)
+        return res
+# 时间复杂度O(log(n))
+# 空间复杂度O(1)
