@@ -1,0 +1,32 @@
+# nums右翻转点分为左右分支，右分支的数都小于做分支
+# 先判断target在左分支还是右分支
+# 然后二分查找
+class Solution:
+    def search(self, nums: List[int], target: int) -> int:
+        if not nums: return -1
+        # 判断其在做分支还是有分支
+        flag = True if nums[0] <= target else False
+        # 双指针，闭区间
+        l, r = 0, len(nums)-1
+        while l <= r:
+            m = (l+r) // 2
+            # 如果nums[m]即为target，返回m
+            if nums[m] == target: return m
+            # 如果在左分支
+            if flag:
+                # m若果在右分支，或者nums[m]>target，则更新右索引
+                if nums[m]<nums[0] or nums[m]>target:
+                    r = m-1
+                else:
+                    l = m+1
+            # 如果在右分支
+            else:
+                # m若果在左分支，或者nums[m]<target，则更新左索引
+                if nums[m]>=nums[0] or nums[m]<target:
+                    l = m+1
+                else:
+                    r = m-1
+        # 没找到，返回-1
+        return -1
+# 时间复杂度O(log(n))
+# 空间复杂度O(1)
