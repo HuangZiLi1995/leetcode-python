@@ -1,0 +1,111 @@
+# 从左向右遍历，若左括号数==右括号数，则为匹配
+# 若左括号数<右括号数，则说明前一段无法形成有效匹配，重置
+# 过程中保持左括号数>=右括号数，但是会忽略这串字符中子串形成有效匹配的可能
+# 即左括号数>右括号数时的有效匹配
+# 故需逆向再遍历一次
+class Solution:
+    def longestValidParentheses(self, s: str) -> int:
+        # 去掉肯定无用的字符
+        s = s.lstrip(')')
+        s = s.rstrip('(')
+        # 如果字符串为空，则放回0
+        if not s: return 0
+        # 记录长度
+        length = 0
+        # 从左向又遍历字符串
+        l, r = 0, 0
+        for i in s:
+            if i == '(':
+                l += 1
+            else:
+                r += 1
+            if l == r:
+                length = max(length, l+r)
+            elif l < r:
+                l, r = 0, 0
+        # 从右向左边遍历
+        l, r = 0, 0
+        for i in s[::-1]:
+            if i == '(':
+                l += 1
+            else:
+                r += 1
+            print(l, r)
+            if l == r:
+                length = max(length, l+r)
+            elif l > r:
+                l, r = 0, 0
+        return length
+# 时间复杂度O(n):遍历字符串
+# 空间复杂度O(n):储存索引
+
+# 动态规划
+# 一个字符串结尾为')'，若其前一字符为'('，则可形成'()'
+# 若其前一字符为')'，则可越过该字符形成的括号对，与再前一字符形成'(括号对)'
+# 形成括号对后可拼接上前一个字符形成的括号对
+class Solution:
+    def longestValidParentheses(self, s: str) -> int:
+        # 去掉肯定无用的字符
+        s = s.lstrip(')')
+        s = s.rstrip('(')
+        # 如果字符串为空，则放回0
+        if not s: return 0
+        # 存储字第i个字符为结尾的最长有效括号
+        dp = [0] * len(s)
+        for i in range(1, len(s)):
+            # 不可能以(结果
+            if s[i] == '(':
+                dp[i] = 0
+            else:
+                # 如果前一个为(，则可与前一个字符形成一个括号对
+                # 其可以拼接上以第i-2的字符结尾的括号对
+                if s[i-1] == '(':
+                    dp[i] = 2
+                    if i > 1:
+                        dp[i] += dp[i-2]
+                # 如果前一个字符为)，则不能与前一个字符形成括号对
+                # 但可越过前一个字符形成的括号对，再与前一个字符形成括号对
+                # 最后拼接上再前一个字符形成的括号对
+                else:
+                    a = i-dp[i-1]-1
+                    if a>-1 and s[a]=='(':
+                        dp[i] = dp[i-1]+2
+                        if a > 0:
+                            dp[i] += dp[a-1]
+        return max(dp)
+# 时间复杂度O(n):遍历字符串
+# 空间复杂度O(n):dp长度为n
+
+# 索引表示括号所在的位置，将'('的索引压如栈中，如存在与之配对的')'右括号则弹出
+# 已被匹配的右括号与还未被匹配的左括号的索引之差，即该段被匹配括号的长度
+# 另外栈初始包含元素-1，用来标记不能匹配的位置
+# 当这个标记被弹出，则说明其对应')'无可匹配的'('
+# 则将该位置压如栈中，用来标记无法被匹配的位置
+class Solution:
+    def longestValidParentheses(self, s: str) -> int:
+        # 去掉肯定无用的字符
+        s = s.lstrip(')')
+        s = s.rstrip('(')
+        # 如果字符串为空，则放回0
+        if not s: return 0
+        # 记录长度
+        length = 0
+        # 记录匹配字符的前一个字符，0的前一个为-1，及无法匹配的字符
+        record = [-1]
+        for i in range(len(s)):
+            # 记录'('的index
+            if s[i] == '(':
+                record.append(i)
+            # 匹配则弹出末尾'('的index
+            else:
+                record.pop()
+                if record:
+                    # length取原length与这个匹配长度中的较长者
+                    length = max(length, i-record[-1])
+                    # 如果record为空，则说明无法匹配的字符也被使用
+                    # 即该字符也无法被匹配
+                else: 
+                    record.append(i)
+        return length
+# 时间复杂度O(n):遍历字符串
+# 空间复杂度O(n):储存索引
