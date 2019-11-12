@@ -1,0 +1,21 @@
+# 二分查找
+class Solution:
+    def searchInsert(self, nums: List[int], target: int) -> int:
+        # 如果nums为空，返回0
+        if not nums: return 0
+        # 双指针[l, r)
+        l, r = 0, len(nums)
+        # 二分查找
+        while l < r:
+            m = (l+r) // 2
+            # 找到则返回index
+            if nums[m] == target:
+                return m
+            elif nums[m] > target:
+                r = m
+            else:
+                l = m + 1
+        # 没找到返回l，因为l之前为比target小的数
+        return l
+# 时间复杂度O(log(n))
+# 空间复杂度O(1)
