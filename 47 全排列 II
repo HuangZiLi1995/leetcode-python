@@ -1,0 +1,20 @@
+# 回溯法，每次取出一位，各个位上的数字不同去相同，与第46题相似
+class Solution:
+    def permuteUnique(self, nums: List[int]) -> List[List[int]]:
+        if not nums:
+            return []
+        # 每次取一位，相同则舍去
+        def findPermute(nums, record=[], visit=set()):
+            if len(nums) == 1:
+                res.append(record+nums)
+                return
+            for i in range(len(nums)):
+                if nums[i] not in visit:
+                    visit.add(nums[i])
+                    findPermute(nums[:i]+nums[i+1:], record=record+[nums[i]], visit=set())
+            return
+        res = []
+        findPermute(nums)
+        return res
+# 时间复杂度O(n!)
+# 空间复杂度O(n!)
