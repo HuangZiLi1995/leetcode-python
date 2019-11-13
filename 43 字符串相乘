@@ -1,0 +1,19 @@
+# 逐位相乘
+class Solution:
+    def multiply(self, num1: str, num2: str) -> str:
+        if not num1: return num2
+        if not num2: return num1
+        record = []
+        for n2 in num2[::-1]:
+            r = ''
+            c = '0'
+            for n1 in num1[::-1]:
+                n = int(n2) * int(n1) + int(c)
+                c = str(n)[0] if n > 9 else '0' 
+                r = str(n)[-1] + r
+            if c != '0': r = str(c) + r
+            record.append(int(r))
+        res = 0
+        for i in range(len(record)):
+            res += record[i]*10**i
+        return str(res)
