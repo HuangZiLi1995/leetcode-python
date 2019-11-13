@@ -58,3 +58,23 @@ class Solution:
         return res
 # 时间复杂度O(n)
 # 空间复杂度O(n)
+
+# 从左向右遍历，每次记录左边最高
+# 从右向左遍历，每次记录右边最高
+# 两次遍历之和 = 目标形状(原有柱子+水) + 将全部位置填至(max(height))
+class Solution:
+    def trap(self, height: List[int]) -> int:
+        if not height: return 0
+        res = 0
+        lh = 0
+        for h in height:
+            if h > lh: lh = h
+            res += lh
+        rh = 0
+        for h in height[::-1]:
+            if h > rh: rh = h
+            res += rh
+        res -= len(height)*max(height) + sum(height)
+        return res
+# 时间复杂度O(n)
+# 空间复杂度O(1)
