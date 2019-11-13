@@ -1,0 +1,60 @@
+# 双指针，如果中间的柱子低于长度的柱子，则其接水量由较短的一端决定
+class Solution:
+    def trap(self, height: List[int]) -> int:
+        if not height: return 0
+        res = 0
+        # 双指针，l，r为两端
+        l, r = 0, len(height)-1
+        # lh, rh为两端高度
+        lh, rh = height[l], height[r]
+        # 若l==r-1，则其中已没空间接水
+        while l < r-1:
+            # 因为接水量由较短一段决定，所以先考虑较短的一端
+            if lh <= rh:
+                l += 1
+                # 如果height[l]<lh，则可将其用水增高至lh
+                if height[l] < lh:
+                    res += lh - height[l]
+                else:
+                    # 否则更新lh
+                    lh = height[l]
+            # 与左端类似
+            else:
+                r -= 1
+                if height[r] < rh:
+                    res += rh - height[r]
+                else:
+                    rh = height[r]
+        return res
+# 时间复杂度O(n)
+# 空间复杂度O(1)
+
+# 使用栈，存储柱子的索引
+# 如果中间的柱子低于长度的柱子，则其接水量由较短的一端决定
+# 栈中柱子的高度递减，这说明在其右边尚未找到高度大于该柱子的，未能接水
+class Solution:
+    def trap(self, height: List[int]) -> int:
+        if not height: return 0
+        res = 0
+        stack = [0]
+        i, n = 1, len(height)
+        while i < n:
+            # 如果第i个柱子比栈中的柱子矮，说明未形成接水区，加入栈中
+            if height[i] <= height[stack[-1]]:
+                stack.append(i)
+                i += 1
+                # print(stack)
+            else:
+                # 如果第i个柱子高于stack的栈顶柱子，而stack又递减，则可接水
+                j = stack.pop()
+                # 可在第j个柱子两端之间接水至较矮一端搞搞
+                if stack:
+                    # 高度差*宽度
+                    res += (i-stack[-1]-1) * (min(height[i], height[stack[-1]])-height[j])
+                else:
+                    # 若stack为空，则说明水会从左端漏出，出发接水
+                    stack.append(i)
+                    i += 1
+        return res
+# 时间复杂度O(n)
+# 空间复杂度O(n)
