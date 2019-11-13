@@ -1,0 +1,17 @@
+# 回溯法，每次取出一个数字
+class Solution:
+    def permute(self, nums: List[int]) -> List[List[int]]:
+        if not nums:
+            return []
+        # 每次取出一个数字
+        def findPermute(nums, pre=[]):
+            if len(nums) == 1:
+                res.append(pre+nums)
+            for i in range(len(nums)):
+                findPermute(nums[:i]+nums[i+1:], pre=pre+[nums[i]])
+            return
+        res = []
+        findPermute(nums)
+        return res
+# 时间复杂度O(n!)
+# 空间复杂度O(n!)
