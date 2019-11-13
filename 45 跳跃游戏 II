@@ -1,0 +1,23 @@
+# 贪婪算法
+class Solution:
+    def jump(self, nums: List[int]) -> int:
+        if len(nums) < 2: return 0
+        # 初始化
+        i, step, n = 0, 0, len(nums)-1
+        while True:
+            # 跳次
+            step += 1
+            # 记录length，跳到的位置
+            length, next_i = 0, 0
+            # 遍历当前位置上可跳到的位置
+            for j in range(i+1, i+nums[i]+1):
+                # 如果可跳到最后一位，或者超过，返回step
+                if j >= n: return step
+                # 当前位置可到j，j再跳一次可到达的位置
+                # 记录最远可到达的位置，当前j即为所需到达的节点
+                if j+nums[j] > length:
+                    length = j+nums[j]
+                    next_i = j
+            i = next_i
+# 时间复杂度O(n)
+# 空间复杂度O(1)
