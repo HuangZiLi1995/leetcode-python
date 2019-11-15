@@ -1,0 +1,44 @@
+# 回溯法
+# 用行来遍历
+# 每次放置一个皇后，检查该位置所对应的列及对角线有无皇后
+class Solution:
+    def solveNQueens(self, n: int) -> List[List[str]]:
+        if not n:
+            return []
+        # 用来存储已经放置的列，对角线(两条)，用行来遍历
+        col = [False for _ in range(n)]
+        diag1 = [False for _ in range(2*n-1)]
+        diag2 = [False for _ in range(2*n-1)]
+        # 回溯函数 i 当前填充的行，record记录前面行上皇后放置的位置
+        def backtrack(i, col, diag1, diag2, record=[]):
+            # 已经放完则储存
+            if i == n:
+                res.append(record)
+                return
+            for j in range(n):
+                # 检查该位置所处的列，对角线上是否有皇后
+                if not col[j] and not diag1[j-i+n-1] and not diag2[j+i]:
+                    # 没有则设置该列及对角线为True，然后进入下一行
+                    col[j], diag1[j-i+n-1], diag2[j+i] = True, True, True
+                    backtrack(i+1, col, diag1, diag2, record+[j])
+                    # 回溯是恢复数据
+                    col[j], diag1[j-i+n-1], diag2[j+i] = False, False, False
+            return
+        res = []
+        backtrack(0, col, diag1, diag2)
+        # 根据记录形成棋盘
+        def res_to_board(res):
+            boards = []
+            for re in res:
+                board = []
+                for i in range(n):
+                    row = ''
+                    for j in range(n):
+                        if j == re[i]:
+                            row = row + 'Q'
+                        else:
+                            row = row + '.'
+                    board.append(row)
+                boards.append(board)
+            return boards
+        return res_to_board(res)
