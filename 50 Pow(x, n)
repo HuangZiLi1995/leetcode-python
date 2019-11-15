@@ -1,0 +1,17 @@
+# 递归
+# x**n == x**(n//2) * x**(n//2),如果n为偶数
+# x**n == x**(n//2) * x**(n//2) * x,如果n为偶数
+class Solution:
+    def myPow(self, x: float, n: int) -> float:
+        if n == 0: return 1
+        def pow(x, n):
+            if n == 1: return x
+            i = n // 2
+            res = pow(x, i)
+            res = res * res
+            if n % 2 == 1: res *= x
+            return res
+        res = pow(x, abs(n))
+        return res if n>0 else 1/res
+# 时间复杂度O(log(n))
+# 空间复杂度O(1)
