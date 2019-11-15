@@ -1,0 +1,24 @@
+# 回溯法，与第51题相似
+# 用行来遍历
+# 每次放置一个皇后，检查该位置所对应的列及对角线有无皇后
+class Solution:
+    def __init__(self):
+        self.count = 0   
+    def backtrack(self, n, i, col, diag1, diag2, record=[]):
+            if i == n:
+                self.count += 1
+            for j in range(n):
+                if col[j] or diag1[j-i+n-1] or diag2[j+i]:
+                    continue
+                col[j], diag1[j-i+n-1], diag2[j+i] = True, True, True
+                self.backtrack(n, i+1, col, diag1, diag2, record+[j])
+                col[j], diag1[j-i+n-1], diag2[j+i] = False, False, False
+            return
+    def totalNQueens(self, n: int) -> int:
+        if not n:
+            return 0        
+        col = [False for i in range(n)]
+        diag1 = [False for i in range(2*n-1)]
+        diag2 = [False for i in range(2*n-1)]
+        self.backtrack(n, 0, col, diag1, diag2)
+        return self.count
