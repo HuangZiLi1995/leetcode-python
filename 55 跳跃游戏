@@ -1,0 +1,54 @@
+# 只有卡在0上的不能跳出
+# 所以只需检查能否跳出0即可
+class Solution:
+    def canJump(self, nums: List[int]) -> bool:
+        if len(nums) < 2: return True
+        # 遍历nums查找0
+        for i in range(len(nums)-1):
+            # 不是0则continue
+            if nums[i] != 0: continue
+            # 记录能否跳出
+            flag = False
+            for j in range(i-1, -1, -1):
+                # 检查能否跳出
+                if nums[j] > i-j:
+                    flag = True
+                    break
+            # 不能跳出则返回False
+            if not flag: return False
+        return True
+# 时间复杂度O(n2)
+# 空间复杂度O(1) 
+
+# 动态规划
+# 从右向左记录能否达到最后的位置
+# 在一次跳跃能到到达的区间中，只要能到达最后的，即此位置也能到达
+class Solution:
+    def canJump(self, nums: List[int]) -> bool:
+        if len(nums) < 2: return True
+        dp = [False] * len(nums)
+        dp[-1] = True
+        # 从右向左遍历
+        for i in range(len(nums)-2, -1, -1):
+            # 遍历此位置上能到达的区间
+            for j in range(i+1, i+nums[i]+1):
+                if dp[j]==True:
+                    dp[i] = True
+                    break
+        return dp[0]
+# 时间复杂度O(n2)
+# 空间复杂度O(n)
+
+# 动态规划
+# 从右向左记录能否达到最后的位置
+# 在一次跳跃能到到达的区间中，只要能到达最后的，即此位置也能到达
+class Solution:
+    def canJump(self, nums: List[int]) -> bool:
+        if len(nums) < 2: return True
+        n = len(nums) - 1
+        # 从右向左遍历
+        for i in range(len(nums)-2, -1, -1):
+            if i+nums[i] >= n: n = i
+        return n == 0
+# 时间复杂度O(n)
+# 空间复杂度O(1)
