@@ -1,0 +1,26 @@
+# 递归
+# 每次遍历一圈
+class Solution:
+    def spiralOrder(self, matrix: List[List[int]]) -> List[int]:
+        if not matrix: return []
+        m, n = len(matrix), len(matrix[0])
+        # 当只有一行时返回该行
+        if m == 1: return matrix[0]
+        # 当所有元素为空时返回空
+        if n == 0: return []
+        # 当只有一列时返回该列
+        if n == 1: return [matrix[i][0] for i in range(m)]
+        # 开始遍历一圈
+        # 取出第一行
+        res = matrix[0][:]
+        # 遍历最后一列
+        res.extend([matrix[i][-1] for i in range(1, m-1)])
+        # 遍历最后一行
+        res.extend([matrix[-1][i] for i in range(n-1, -1, -1)])
+        # 遍历第一列
+        res.extend([matrix[i][0] for i in range(m-2, 0, -1)])
+        # 遍历内圈
+        res.extend(self.spiralOrder([m[1:n-1] for m in matrix[1:m-1]]))
+        return res
+# 时间复杂度O(n)
+# 空间复杂度O(n)
