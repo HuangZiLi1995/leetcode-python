@@ -1,0 +1,17 @@
+# 将不同单词的字母排序建立索引
+# 用字典保存索引和其对应的单词
+class Solution:
+    def groupAnagrams(self, strs: List[str]) -> List[List[str]]:
+        record = {}
+        # 遍历单词
+        for string in strs:
+            # 排序字母，建立索引
+            index = ''.join(sorted(string))
+            # 加入字典
+            if index in record.keys():
+                record[index].append(string)
+            else:
+                record[index] = [string]
+        return list(record.values())
+# 时间复杂度O(n)
+# 空间复杂度O(n)
