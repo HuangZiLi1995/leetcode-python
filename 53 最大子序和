@@ -1,0 +1,41 @@
+# 动态规划，记录以该位为结果的连续子数组的最大值
+class Solution:
+    def maxSubArray(self, nums: List[int]) -> int:
+        dp = [None] * len(nums)
+        # 第一位最大值即为本身
+        dp[0] = nums[0]
+        for i in range(1, len(nums)):
+            # 最大值为本身 或者 本身加上前一位的最大值
+            dp[i] = max(dp[i-1]+nums[i], nums[i])
+        return max(dp)
+# 时间复杂度O(n)
+# 空间复杂度O(n)
+
+# 分治
+# 将数组从中间分开，最大和的连续子数组在左边，右边，或者跨越左右
+# 当跨越左右时，必包含左边最后一位，右边第一个，然后向两边扩展，找最大
+class Solution:
+    def maxSubArray(self, nums: List[int]) -> int:
+        # 终止条件
+        if len(nums) == 1: return nums[0]
+        # 将数组从中间拆分
+        l = len(nums) // 2
+        # 左边最大，右边最大
+        left = self.maxSubArray(nums[:l])
+        right = self.maxSubArray(nums[l:])
+        # 以左边最后一位向左扩展找最大
+        totall = nums[l-1]
+        maxl = nums[l-1]
+        for i in range(l-2, -1, -1):
+            totall += nums[i]
+            maxl = max(maxl, totall)
+        # 以右边第一位向左扩展找最小
+        totalr = nums[l]
+        maxr = nums[l]
+        for i in range(l+1, len(nums)):
+            totalr += nums[i]
+            maxr = max(maxr, totalr)
+        # 返回三者中最大者
+        return max(left, right, maxl+maxr)
+# 时间复杂度O(nlog(n))
+# 空间复杂度O(log(n))
