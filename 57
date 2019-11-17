@@ -1,0 +1,36 @@
+# 顺序遍历
+# 查找第一个结束点大于等于插入区间开始点的区间
+# 查找第一个起始点大于插入区间结束点的区间
+# 然后将两端拼上，中间合并即可
+class Solution:
+    def insert(self, intervals: List[List[int]], newInterval: List[int]) -> List[List[int]]:
+        if not intervals: return [newInterval]
+        res = []
+        # 查找第一个结束点大于等于插入区间开始点的区间
+        start = newInterval[0]
+        for i in range(len(intervals)):
+            if intervals[i][1] < newInterval[0]:
+                # 将之前的区间加上
+                res.append(intervals[i])
+            else:
+                # 与该区间合并后的的区间的起始位置为两区间起始位置的较小者
+                start = min(newInterval[0], intervals[i][0])
+                break
+        # 查找第一个起始点大于插入区间结束点的区间
+        end = newInterval[1]
+        for j in range(i, len(intervals)):
+            if intervals[j][0] <= newInterval[1]:
+                # 与该区间合并后的的区间的结束位置为两区间起始位置的较大者
+                end = max(end, intervals[j][1])
+            else:
+                break
+        # 加上合并后的区间
+        res.append([start, end])
+        # 如果已经处理过最后的区间了，则返回
+        if end >= intervals[-1][1]:
+            return res
+        # 将后面的区间加上
+        res.extend(intervals[j:])
+        return res
+# 时间复杂度O(n)
+# 空间复杂度O(n)
