@@ -1,0 +1,23 @@
+# 贪婪算法
+# 排序区间，按start排序，则下一个区间一定在上一个区间之后开始
+# 如果下一个区间的start在已经记录的区间之间，则合并区间
+# 如果不在，则说明不能合并，需重新开辟区间
+class Solution:
+    def merge(self, intervals: List[List[int]]) -> List[List[int]]:
+        if not intervals: return []
+        # 排序
+        intervals.sort()
+        res, r = [], intervals[0]
+        for i in intervals[1:]:
+            # 如果可以合并则合并
+            if i[0] <= r[1]:
+                r = [r[0], max(r[1], i[1])]
+            # 如果不能合并，则记录当前区间，并重新开辟区间
+            else:
+                res.append(r)
+                r = i
+        # 将最后一个区间加入
+        res.append(r)
+        return res
+# 时间复杂度O(n)
+# 空间复杂度O(1)
