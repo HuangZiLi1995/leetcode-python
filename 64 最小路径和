@@ -1,0 +1,23 @@
+# 动态规划
+# 每个格子可由上面格子和左边格子到达
+# 所以最小值为从（上面格子到达之和与左边格子到达）中的较小者
+class Solution:
+    def minPathSum(self, grid: List[List[int]]) -> int:
+        n, m = len(grid), len(grid[0])
+        dp = [[0]*m for _ in range(n)]
+        # 初始化第一个格子
+        dp[0][0] = grid[0][0]
+        # 初始化第一列，只能从上面格子到达
+        for i in range(1, n):
+            dp[i][0] = dp[i-1][0] + grid[i][0]
+        # 初始化第一行，只能从左边格子达到
+        for i in range(1, m):
+            dp[0][i] = dp[0][i-1] + grid[0][i]
+        # 计算剩余格子
+        for i in range(1, n):
+            for j in range(1, m):
+                # 上面到达与左边到达中的较小者
+                dp[i][j] = min(dp[i-1][j], dp[i][j-1]) + grid[i][j]
+        return dp[-1][-1]
+# 时间复杂度O(m*n)
+# 空间复杂度O(m*n)
