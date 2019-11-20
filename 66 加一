@@ -1,0 +1,15 @@
+# 倒序遍历数组
+# 如果没有进位直接返回
+# 如果有进位则进入下一位
+class Solution:
+    def plusOne(self, digits: List[int]) -> List[int]:
+        for i in range(len(digits)-1, -1, -1):
+            digits[i] += 1
+            carry = digits[i] // 10
+            if carry == 0:
+                return digits
+            digits[i] %= 10
+        digits.insert(0, 1)
+        return digits
+# 时间复杂度O(n)
+# 空间复杂度O(1)
