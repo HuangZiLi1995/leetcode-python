@@ -1,0 +1,49 @@
+# 先将单词分行
+# 再填空
+class Solution:
+    def fullJustify(self, words: List[str], maxWidth: int) -> List[str]:
+        rows = []
+        row = [words[0]]
+        length = len(words[0])
+        # 将单词分开，每行最短的长度为单词长度之和
+        # 加上（单词数-1）即最少需要的空格数
+        for word in words[1:]:
+            length += 1 + len(word)
+            if length <= maxWidth:
+                row.append(word)
+            else:
+                rows.append(row)
+                row = [word]
+                length = len(word)
+        rows.append(row)
+        # 填充空格
+        res = []
+        for row in rows[:-1]:
+            # 如果只有一个单词，直接补全长度即可
+            if len(row) == 1: 
+                res.append(row[0]+' '*(maxWidth-len(row[0])))
+                continue
+            # 不止一个单词
+            # 计算单词总长度
+            length = 0
+            for word in row:
+                length += len(word)
+            blank = (maxWidth-length) // (len(row)-1)
+            n = (maxWidth-length) % (len(row)-1)
+            # 求该行对应字符串
+            string = ''
+            for i in range(n):
+                string += row[i] + ' '*(blank+1)
+            for i in range(n, len(row)-1):
+                string += row[i] + ' '*blank
+            string += row[-1]
+            res.append(string)
+        # 最后一行
+        string = ''
+        for i in range(len(rows[-1])-1):
+            string += rows[-1][i] + ' '
+        string += rows[-1][-1]
+        res.append(string+' '*(maxWidth-len(string)))
+        return res
+# 时间复杂度O(n)
+# 空间复杂度O(n)
