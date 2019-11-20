@@ -1,0 +1,15 @@
+# 二分查找
+class Solution:
+    def mySqrt(self, x: int) -> int:
+        l, r = 0, x
+        while l < r:
+            # 取右边界
+            # 当r==m时，下一次r将减1，而不会陷入循环
+            m = (l+r+1) // 2
+            if m*m > x:
+                r = m-1
+            else:
+                l = m
+        return l
+# 时间复杂度O(log(n))
+# 空间复杂度O(1)
