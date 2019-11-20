@@ -34,3 +34,28 @@ class Solution:
         return res
 # 时间复杂度O(n)
 # 空间复杂度O(n)
+
+# 将新区间加入，排序后，之后和第56题一样
+class Solution:
+    def insert(self, intervals: List[List[int]], newInterval: List[int]) -> List[List[int]]:
+        if not intervals: return [newInterval]
+        # 加入
+        intervals.append(newInterval)
+        # 排序
+        intervals.sort()
+        res = []
+        # r用来存储当前遍历到的区间的所属区间
+        r = intervals[0]
+        # 遍历区间
+        for i in intervals:
+            # 如果区间有重叠，则扩展区间
+            if r[1] >= i[0]:
+                r[1] = max(r[1], i[1])
+            # 否则重置区间
+            else:
+                res.append(r)
+                r = i
+        res.append(r)
+        return res
+# 时间复杂度O(nlog(n))
+# 空间复杂度O(n)
