@@ -1,0 +1,24 @@
+# 先依据'/'拆分路径
+# 根据中间符号的意义判别
+class Solution:
+    def simplifyPath(self, path: str) -> str:
+        # 拆分
+        path = path.split('/')
+        stack = []
+        for p in path:
+            # 为空则跳过
+            if not p:
+                continue
+            # '.'为当前目录，跳过
+            if p == '.':
+                continue
+            # '..'返回上级目录，弹出一个目录
+            elif p == '..':
+                if stack:
+                    stack.pop()
+            else:
+                stack.append(p)
+        # 将目录用'/'相连
+        return '/' + '/'.join(stack)
+# 时间复杂度O(n)
+# 空间复杂度O(n)
