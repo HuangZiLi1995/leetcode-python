@@ -1,0 +1,14 @@
+# 去掉右边的空字符
+# 倒序查看是否为空
+class Solution:
+    def lengthOfLastWord(self, s: str) -> int:
+        s = s.rstrip()
+        if len(s) == 0: return 0
+        
+        length = 0
+        for i in s[::-1]:
+            if i != ' ':
+                length += 1
+            else:
+                break
+        return length
