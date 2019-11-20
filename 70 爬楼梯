@@ -1,0 +1,17 @@
+# 动态规划
+# 超过2阶的，每一阶由
+# 前一阶走一步+
+# 前两节走两步
+class Solution:
+    def climbStairs(self, n: int) -> int:
+        if not n:
+            return 0
+        
+        meno = [1, 2]
+        i = 2
+        while i < n:
+            meno.append(meno[i-1]+meno[i-2])
+            i += 1
+        return meno[n-1]
+# 时间复杂度O(n)
+# 空间复杂度O(n)
