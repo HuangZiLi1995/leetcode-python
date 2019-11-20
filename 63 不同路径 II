@@ -1,0 +1,33 @@
+# 与第62题类似
+# 不同之处在于不能到达存在障碍物的格子，其路径数位0
+class Solution:
+    def uniquePathsWithObstacles(self, obstacleGrid: List[List[int]]) -> int:
+        if not obstacleGrid or not obstacleGrid[0]:
+            return 0
+        # 计算行列
+        n, m = len(obstacleGrid), len(obstacleGrid[0])
+        res = [[0]*m for _ in range(n)]
+        # 初始化第一列
+        for i in range(n):
+            # 如果能到达，则只有一种
+            if obstacleGrid[i][0] == 0:
+                res[i][0] = 1
+            # 如果有一个格子有障碍，则剩下都不能到达
+            else:
+                break
+        # 初始化第一行
+        for i in range(m):
+            if obstacleGrid[0][i] == 0:
+                res[0][i] = 1
+            else:
+                break
+        # 计算剩余格子
+        # 如果为障碍则为0
+        # 不是障碍，则为上与左的路径之和
+        for i in range(1,n):
+            for j in range(1,m):
+                if obstacleGrid[i][j] == 0:
+                    res[i][j] = res[i-1][j] + res[i][j-1]
+        return res[-1][-1]
+# 时间复杂度O(n*m)
+# 空间复杂度O(n*m)
