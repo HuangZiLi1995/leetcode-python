@@ -1,0 +1,28 @@
+# 若k>链表节点数，则每循环一次链表，链表保持不变
+# 则需先计算链表节点数
+# 再计算k在遍历链表后还剩几个节点
+# 每个节点前进k个，即将后k-1个接到前面即可
+class Solution:
+    def rotateRight(self, head: ListNode, k: int) -> ListNode:
+        if not head or not head.next:
+            return head
+        # 计算链表有几个节点
+        count = 1
+        cur = head
+        while cur.next:
+            count += 1
+            cur = cur.next
+        tail = cur
+        # k遍历链表后剩下节点
+        k = k % count
+        if k == 0:
+            return head
+        # 找到倒数第k个节点
+        cur = head
+        for _ in range(count-k-1):
+            cur = cur.next
+        # 将后k-1个接到前面即可
+        cur.next, tail.next, head = None, head, cur.next
+        return head
+# 时间复杂度O(n)
+# 空间复杂度O(1)
