@@ -1,0 +1,27 @@
+# 倒序相加
+class Solution:
+    def addBinary(self, a: str, b: str) -> str:
+        # 判断长度，长的为a，短的为b
+        n, m = len(a), len(b)
+        if n < m: a, b, n, m = b, a, m, n
+        # 长度差
+        d = n - m
+        res, c = '', 0
+        # 在两数共同为上相加
+        for i in range(m-1,-1,-1):
+            s = int(a[d+i]) + int(b[i]) + c
+            res = str(s%2) + res
+            c = s // 2
+        # 处理较长串的剩余数字
+        # 如果没有进位则直接拼接即可
+        if c == 0: return a[:d] + res
+        # 有的话则下一位需加1
+        for i in range(d-1,-1,-1):
+            s = int(a[i]) + 1
+            res = str(s%2) + res
+            c = s // 2
+            # 如果没有进位则直接拼接即可
+            if c == 0: return a[:i] + res
+        return '1' + res
+# 时间复杂度O(n)
+# 空间复杂度O(n)
