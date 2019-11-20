@@ -1,0 +1,56 @@
+# 暴力求解，分析每个字符的不同情况和其对应的状态转移
+class Solution:
+    def isNumber(self, s: str) -> bool:
+        # 去掉两端的空白字符
+        s = s.strip()
+        # 如果s为空则返回False，另判断一下第一个字符
+        # s的第一个字符可以为'.'，但是不能只是'.'
+        # 第一个字符不能为'e'
+        if not s or s=='.' or s[0]=='e': return False
+        # 数字查询表
+        numbers = set([str(i) for i in range(10)])
+        n = len(s)
+        # 记录符号，小数点，e是否可用
+        sign, point, e = True, True, True
+        for i in range(n):
+            if s[i]=='+' or s[i]=='-':
+                # 若符号可用
+                if sign:
+                    # 置为用过，不可用
+                    sign = False
+                # 不可用则False
+                else:
+                    return False
+                # 如果符号位为最后一位则False
+                # 符号位后不能为'e'，之后也不能只跟'.'
+                if i+1==n or s[i+1]=='e' or s[i+1:]=='.':
+                    return False
+            elif s[i] == '.':
+                # 若'.'可用
+                if point:
+                    # 置为用过，不可用
+                    point, sign = False, False
+                # 不可用则False
+                else:
+                    return False
+            elif s[i] == 'e':
+                # 若'e'可用
+                if e:
+                    # 置为用过，不可用
+                    # 后面不能用'.'，但可连符号
+                    e, point, sign = False, False, True
+                else:
+                    return False
+                # 'e'不能为最后一位，前面不能全为点，后面不能全为点
+                if s[:i]=='.' or i==n-1 or s[i+1:]=='.': 
+                    return False 
+            # 如果为数字，则之后不能接着符号
+            elif s[i] in numbers:
+                sign = False
+            # 非法字符则False    
+            else:
+                return False
+        # 全部通过则为True
+        return True
+# 时间复杂度O(n)
+# 空间复杂度O(1)
