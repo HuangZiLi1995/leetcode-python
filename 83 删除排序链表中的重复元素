@@ -1,0 +1,14 @@
+# 检查下一个节点的值是否与当前节点的值相同
+# 相同则删除
+class Solution:
+    def deleteDuplicates(self, head: ListNode) -> ListNode:
+        if not head: return head
+        cur = head
+        while cur.next:
+            if cur.next.val == cur.val:
+                cur.next = cur.next.next
+            else:
+                cur = cur.next
+        return head
+# 时间复杂度O(n)
+# 空间复杂度O(1)
