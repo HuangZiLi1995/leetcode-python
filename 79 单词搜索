@@ -1,0 +1,41 @@
+# 回溯法
+# 首先定位第一个字符的位置，再进行回溯
+class Solution:
+    def exist(self, board: List[List[str]], word: str) -> bool:
+        if not board or not word:
+            return False
+        # 递归函数，每次搜索一个字符
+        # i,j 为需要开始搜索的位置
+        # word为所需要搜索的字符串
+        def backtrack(board, i, j, word):
+            # 如果没有需要搜索的字符，则说明以搜索完毕
+            if not word:
+                return True
+            # 四个方向
+            direction = [[-1, 0], [1, 0], [0, -1], [0, 1]]
+            # 遍历四个方面
+            for d in direction:
+                # 下一个位置
+                x, y = i-d[0], j-d[1]
+                # 如果满足条件
+                if (len(board)>x>= 0) and (len(board[x])>y>=0) and (board[x][y]==word[0]):
+                    # 将此处设为已经搜索
+                    board[x][y] = None
+                    # 进入递归，如果此次递归已找到，则返回
+                    if backtrack(board, x, y, word[1:]):
+                        return True
+                    # 否则回复此处值，搜索下一方向
+                    board[x][y] = word[0]
+            return False
+        #寻找第一个字符的位置
+        for i in range(len(board)):
+            for j in range(len(board[i])):
+                if board[i][j] != word[0]:
+                    continue
+                board[i][j] = None
+                if backtrack(board, i, j, word[1:]):
+                    return True
+                board[i][j] = word[0]
+        return False
+# 时间复杂度O(行数*列数*word长度**3)
+# 空间复杂度O(word长度)
