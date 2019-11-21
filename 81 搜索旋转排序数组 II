@@ -1,0 +1,55 @@
+# 二分法
+# 先判断是否等于nums[0],因为它可能在左分支，也可能在右分支
+# 再在头尾中删去等于nums[0]的数，这样左分支大于nums[0],右分支小于nums[0]
+# 判断target在哪个分支，再二分查找
+class Solution:
+    def search(self, nums: List[int], target: int) -> bool:
+        if not nums: return False
+        # 判断第一个数是否为target
+        if nums[0] == target: return True
+        # 删除两端与nums[0]相同的数
+        num = nums[0]
+        while len(nums)>0 and nums[0]==num:
+            nums.pop(0)
+        while len(nums)>0 and nums[-1]==num:
+            nums.pop()
+        if not nums: return False
+        # 判断在哪个分支
+        flag = True if target > num else False
+        # 查找区间为[l,r)
+        l, r = 0, len(nums)
+        while l < r:
+            m = (l+r) // 2
+            # 左分支
+            if flag:
+                # 如果大于target,则m在右分支且在target右边
+                if nums[m] > target:
+                    # 调整右边界
+                    r = m
+                # 如果小于target，需判断是否在右分支还时左分支左边
+                elif nums[m] < target:
+                    # 如果左分支
+                    if nums[m] > num:
+                        # 调整左边界
+                        l = m+1
+                    # 如果有分支
+                    else:
+                        # 调整右边界
+                        r = m
+                # 相等则已经找到
+                else:
+                    return True
+            # 如果右分支（与左分支的分析相似）
+            else:
+                if nums[m] > target:
+                    if nums[m] > num:
+                        l = m+1
+                    else:
+                        r = m
+                elif nums[m] < target:
+                    l = m+1
+                else:
+                    return True
+        return False
+# 时间复杂度O(n)+O(log(n)):删除头尾nums[0]+二分查找
+# 空间复杂度O(1)
