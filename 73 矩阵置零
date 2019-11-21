@@ -1,0 +1,25 @@
+# 首先遍历一次矩阵，记录出现0的行列
+# 根据记录的行列改变矩阵的值
+class Solution:
+    def setZeroes(self, matrix: List[List[int]]) -> None:
+        """
+        Do not return anything, modify matrix in-place instead.
+        """
+        n, m = len(matrix), len(matrix[0])
+        # 用set记录，不会有重复值
+        rows, cols = set(), set()
+        # 遍历矩阵，记录出现0位置的行列
+        for i in range(n):
+            for j in range(m):
+                if matrix[i][j] == 0:
+                    rows.add(i)
+                    cols.add(j)
+        # 根据记录的行列改变矩阵的值
+        for row in rows:
+            matrix[row] = [0] * m
+        for col in cols:
+            for i in range(n):
+                matrix[i][col] = 0
+        return
+# 时间复杂度O(n)
+# 空间复杂度O(行数+列数)
