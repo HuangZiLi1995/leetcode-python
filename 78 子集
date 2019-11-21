@@ -1,0 +1,22 @@
+# 回溯法
+# 每个数字可选择填入或者不填入
+class Solution:
+    def subsets(self, nums: List[int]) -> List[List[int]]:
+        if not nums:
+            return [[]]
+        # 递归函数，record为已填入的数字
+        def backtrack(nums, record=[]):
+            # 如果没有可选择项，则记录
+            if len(nums) == 0:
+                res.append(record)
+                return
+            # 不填入
+            backtrack(nums[1:], record)
+            # 填入
+            backtrack(nums[1:], record+[nums[0]])
+            return
+        res = []
+        backtrack(nums)
+        return res
+# 时间复杂度O(2**n)
+# 空间复杂度O(2**n)
