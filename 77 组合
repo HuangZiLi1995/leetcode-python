@@ -1,0 +1,23 @@
+# 回溯法
+# 每次填入一个数字
+class Solution:
+    def combine(self, n: int, k: int) -> List[List[int]]:
+        if n < k:
+            return []
+        # 递归函数，[low,n]为可填入区间
+        # k为还需填入的数字
+        # record为已填入的数字
+        def backtrack(low, n, k, record=[]):
+            # 如果不需要填入，则记录
+            if k == 0:
+                res.append(record)
+                return
+            # 填入数字，但需留出剩余所需字符的个数(k-1)
+            for i in range(low, n+2-k):
+                backtrack(i+1, n, k-1, record=record+[i])
+            return
+        res = []
+        backtrack(1, n, k)
+        return res
+# 时间复杂度(n!/(n-k)!)
+# 空间复杂度(n!/(n-k)!)
