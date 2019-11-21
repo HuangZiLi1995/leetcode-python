@@ -1,0 +1,45 @@
+# 滑动窗口
+# 遍历t中字符，记录t中不同字符及其出现的次数
+# 遍历s中字符，如果字符在t中出现，则记录index
+# 遍历index，向右扩大窗口
+# 如果遍历的字符已满足要求，则记录，在想走缩小窗口
+class Solution:
+    def minWindow(self, s: str, t: str) -> str:
+        # 遍历t，记录t中不同字符及其出现的次数
+        # 即子串中需要的字符及其数目
+        record = {}
+        for i in t:
+            record[i] = record.get(i,0) + 1
+        # 遍历s中字符，记录在t中出现的字符的index
+        indexes = []
+        for i in range(len(s)):
+            if s[i] in record.keys():
+                indexes.append(i)
+        # s中在t中出现的字符总数目小于t的长度，则False
+        if len(indexes) < len(t):
+            return ''
+        # 记录有几个字符已经满足要求
+        require = 0
+        # [l,r)为窗口
+        l, r, res = 0, 0, ''
+        while r < len(indexes):
+            # 将r加入窗口中，减少所需该字符所需数目
+            record[s[indexes[r]]] -= 1
+            # 如果该字符数目所需数目刚好为0，则刚好在此次满足要求
+            if record[s[indexes[r]]] == 0:
+                require += 1
+            # 如果全部字符满足要求，则记录子串，缩小窗口
+            while require == len(record):
+                # 比较长度后，记录该子串
+                if res == '' or len(res)>indexes[r]-indexes[l]+1:
+                    res = s[indexes[l]:indexes[r]+1]
+                # 将l右移，缩小窗口
+                record[s[indexes[l]]] += 1
+                if record[s[indexes[l]]] == 1:
+                    require -= 1
+                l += 1
+            # 将r右移，扩大窗口
+            r += 1
+        return res
+# 时间复杂度O(n)
+# 空间复杂度O(n)
