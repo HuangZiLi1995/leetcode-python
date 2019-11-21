@@ -1,0 +1,33 @@
+# 二分搜索
+# 先查找第一个元素小于等于target但下一行第一个元素大于target的行
+# 在这一行中查找目标值
+class Solution:
+    def searchMatrix(self, matrix: List[List[int]], target: int) -> bool:
+        if not matrix or not matrix[0]:
+            return False
+        if target<matrix[0][0] or target>matrix[-1][-1]:
+            return False
+        # 查找行
+        l, r = 0, len(matrix)-1
+        while l < r:
+            m = (l+r+1) // 2
+            if target > matrix[m][0]:
+                l = m
+            elif target < matrix[m][0]:
+                r = m - 1 
+            else:
+                return True
+        row = l
+        # 查找列
+        l, r = 0, len(matrix[0])
+        while l < r:
+            m = (l+r) // 2
+            if target > matrix[row][m]:
+                l = m + 1
+            elif target < matrix[row][m]:
+                r = m
+            else:
+                return True
+        return False
+# 时间复杂度O(log(行数)+log(列数))
+# 空间复杂度O(1)
