@@ -1,0 +1,25 @@
+# 连续检查两个节点，检查其是否重复，重复则记录该值，根据该值删除节点
+class Solution:
+    def deleteDuplicates(self, head: ListNode) -> ListNode:
+        # 建立虚拟头结点
+        dummyHead = ListNode(None)
+        dummyHead.next = head
+        # cur遍历链表
+        cur = dummyHead
+        # 记录重复的值
+        val = None
+        # 要处理的点为cur.next
+        while cur.next:
+            # 如过cur.next与下一节点的值相同则更新val
+            if cur.next.next and (cur.next.val==cur.next.next.val):
+                    val = cur.next.val
+            # 如果cur.next的值为val，即存在重复的值
+            # 则将cur与cur.next.next相连，即删去cur.next
+            if cur.next.val == val:
+                cur.next = cur.next.next
+            # 否则处理下一节点
+            else:
+                cur = cur.next
+        return dummyHead.next
+# 时间复杂度O(n)
+# 空间复杂度O(1)
