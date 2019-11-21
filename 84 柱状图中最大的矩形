@@ -1,0 +1,20 @@
+# 利用栈，栈中保持一个递增序列
+class Solution:
+    def largestRectangleArea(self, heights: List[int]) -> int:
+        if not heights: return 0
+        # 将栈底置为-1，即0的左边
+        res, stack, n = 0, [-1], len(heights)
+        # 遍历heights
+        for i in range(n):
+            # 如果栈里有柱子，而且栈顶柱子高于当前柱子
+            while stack[-1]!=-1 and heights[i]<heights[stack[-1]]:
+                # 以stack.pop()为高，i和stack[-1]为边界构成矩形
+                res = max(res, heights[stack.pop()]*(i-stack[-1]-1))
+            # 将当前柱子压入栈中
+            stack.append(i)
+        # 如果栈中有剩余元素，则这些元素可一直延伸至最右，计算矩形
+        while stack[-1] != -1:
+            res = max(res, heights[stack.pop()]*(n-stack[-1]-1))
+        return res
+# 时间复杂度O(n)
+# 空间复杂度O(1)
