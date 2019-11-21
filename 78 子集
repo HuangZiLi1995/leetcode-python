@@ -20,3 +20,17 @@ class Solution:
         return res
 # 时间复杂度O(2**n)
 # 空间复杂度O(2**n)
+
+# 迭代
+# 每个数字可以选择填入或者不填
+class Solution:
+    def subsets(self, nums: List[int]) -> List[List[int]]:
+        # 初始化，全部不填入
+        res = [[]]
+        # 遍历nums
+        for num in nums:
+            #     不填入部分 + 填入部分
+            res = res + [r+[num] for r in res]
+        return res
+# 时间复杂度O(2**n)
+# 空间复杂度O(2**n)
