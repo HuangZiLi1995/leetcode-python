@@ -1,0 +1,28 @@
+# 分别取出<x和>=x的节点，再接到一起
+class Solution:
+    def partition(self, head: ListNode, x: int) -> ListNode:
+        # cur用来遍历节点
+        cur = head
+        # 存储<x的节点
+        s = ListNode(None)
+        sc = s
+        # 储存>=x的节点
+        l = ListNode(None)
+        lc = l
+        # 遍历节点
+        while cur:
+            # <x则节点sc后
+            if cur.val < x:
+                sc.next = cur
+                sc = sc.next
+            # 否则接到lc后
+            else:
+                lc.next = cur
+                lc = lc.next
+            # 下一节点
+            cur = cur.next
+        # 拼接两条链表，并置末尾为None
+        sc.next, lc.next = l.next, None
+        return s.next
+# 时间复杂度O(n)
+# 空间复杂度O(1)
