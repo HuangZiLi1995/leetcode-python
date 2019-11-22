@@ -1,0 +1,103 @@
+# 柱状图
+# 向左扩展，计算以该点向左扩展的最大宽度
+# 再向上扩展，计算以该点为右下角的矩阵面积
+# 面积为  高度*最小的宽度
+class Solution:
+    def maximalRectangle(self, matrix: List[List[str]]) -> int:
+        record = [[0]*len(matrix[0]) for _ in range(len(matrix))]
+        # 计算每个网格向左扩展的最大宽度
+        for i in range(len(matrix)):
+            if matrix[i][0] == '1':
+                record[i][0] = 1
+            for j in range(1, len(matrix[0])):
+                if matrix[i][j] == '1':
+                    record[i][j] = record[i][j-1] + 1
+        res = 0
+        # 向上扩展
+        for i in range(len(record)):
+            for j in range(len(record[0])):
+                # 如果本身宽度为0，则无需扩展
+                if record[i][j] == 0: continue
+                # 取出该点的宽度，高度为1时，宽度即面积
+                width, area = record[i][j], record[i][j]
+                # 相上扩展
+                for k in range(i-1,-1,-1):
+                    # 如果上面为0，则无需扩展
+                    if record[k][j] == 0: break
+                    # 去这段高度的最小宽度
+                    width = min(width, record[k][j])
+                    # 计算以该点为右下角的最大面积
+                    area = max(area, width*(i-k+1))
+                # 计算全局最大面积
+                res = max(res, area)
+        return res
+# 时间复杂度O(n*m*m):n=len(matrix[0]);m=len(matrix)
+# 空间复杂度O(n*m)
+
+# 动态规划
+# 最大矩形必然为四边均接触到边界的矩形
+# 故可以其中每一个位置为底，向上扩展到最高，再向左右扩展至最宽得到
+# 最大的矩形则必然被包含在其中
+class Solution:
+    def maximalRectangle(self, matrix: List[List[str]]) -> int:
+        if not matrix: return 0
+        m, n = len(matrix), len(matrix[0])
+        # record存储左边界、右边界、高度
+        record, res = [[0, n, 0] for _ in range(n)], 0
+        # 遍历每一层
+        for i in range(m):
+            # 记录该层的左边界与右边界
+            l, r = 0, n
+            # 从左向右遍历，记录左边界
+            for j in range(n):
+                if matrix[i][j] == '0':
+                    # 如果为0， 则下一层该位置可以向左扩展至最左
+                    # 该位置为本层之后位置的左边界
+                    l, record[j][0] = j+1, 0
+                else:
+                    # 如果为1，则更新该位置左边界
+                    record[j][0] = max(l, record[j][0])
+            # 从右向左更新右边界
+            for j in range(n-1,-1,-1):
+                if matrix[i][j] == '0':
+                    r, record[j][1] = j, n
+                else:
+                    record[j][1] = min(r, record[j][1])
+            # 更新高度
+            for j in range(n):
+                # 如果为1，高度+1
+                if matrix[i][j] == '1':
+                    record[j][2] += 1
+                # 如果为0，重置高度
+                else:
+                    record[j][2] = 0
+            # 计算面积
+            for j in range(n):
+                res = max(res, record[j][2]*(record[j][1]-record[j][0]))
+        return res
+# 时间复杂度O(m*n)
+# 空间复杂度O(n)
+
+# 简化代码
+class Solution:
+    def maximalRectangle(self, matrix: List[List[str]]) -> int:
+        if not matrix: return 0
+        m, n = len(matrix), len(matrix[0])
+        record, res = [[0, n, 0] for _ in range(n)], 0
+
+        for i in range(m):
+            l, r = 0, n
+            for j in range(n-1,-1,-1):
+                if matrix[i][j] == '0':
+                    r, record[j][1] = j, n
+                else:
+                    record[j][1] = min(r, record[j][1])
+            for j in range(n):
+                if matrix[i][j] == '0':
+                    l, record[j][0] = j+1, 0
+                    record[j][2] = 0
+                else:
+                    record[j][0] = max(l, record[j][0])
+                    record[j][2] += 1
+                    res = max(res, record[j][2]*(record[j][1]-record[j][0]))
+        return res
