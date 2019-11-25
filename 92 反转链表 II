@@ -1,0 +1,24 @@
+# 遍历链表，记录第m个节点之前的节点
+# 反转第m个节点和第n个节点之间的节点
+# 将第m-1个节点接在第n个节点之前，第m个节点接在第n+1个节点之前
+class Solution:
+    def reverseBetween(self, head: ListNode, m: int, n: int) -> ListNode:
+        if m==n: return head
+        dummy = ListNode(None)
+        dummy.next, i, cur = head, 0, dummy
+        # 找到第m-1个节点
+        while i < m-1:
+            cur, i = cur.next, i+1
+        # 记录第m-1个节点
+        pre_m, cur, i = cur, cur.next, i+1
+        # 开始反转
+        pre, cur, i = cur, cur.next, i+1
+        while i <= n:
+            cur.next, cur, pre = pre, cur.next, cur
+            i += 1
+        # 将第m-1个节点接在第n个节点之前，第m个节点接在第n+1个节点之前
+        pre_m.next.next = cur
+        pre_m.next = pre
+        return dummy.next
+# 时间复杂度O(n)
+# 空间复杂度O(1)
