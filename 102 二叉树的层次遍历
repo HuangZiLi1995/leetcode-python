@@ -1,0 +1,21 @@
+# 迭代
+# 每次迭代一层
+class Solution:
+    def levelOrder(self, root: TreeNode) -> List[List[int]]:
+        if not root: return []
+        # nodes记录待处理层的节点，vals记录已经处理的值
+        nodes, vals = [root], []
+        while nodes:
+            # 记录该层的值，及下一层的节点
+            level_val, level_nodes = [], []
+            for node in nodes:
+                level_val.append(node.val)
+                if node.left:
+                    level_nodes.append(node.left)
+                if node.right:
+                    level_nodes.append(node.right)
+            vals.append(level_val)
+            nodes = level_nodes
+        return vals
+# 时间复杂度O(n)
+# 空间复杂度O(n)
