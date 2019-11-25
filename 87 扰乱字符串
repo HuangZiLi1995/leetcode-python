@@ -1,0 +1,60 @@
+# 递归
+# 首先判断长度是否相等，不相等则不是
+# 接下来进入递归过程：
+# 判断字符串是否相等，相等则是
+# 判断字符串中字符是否一样，不是则不是
+# 进行分割，i遍历1至n-1分割
+# 有两种可能的分割:
+# s1左边对应s2左边，右s1边对应s2右边
+# 或者交叉对应
+class Solution:
+    def isScramble(self, s1: str, s2: str) -> bool:
+        # 判断长度是否相等
+        if len(s1) != len(s2): return False
+        # 递归函数
+        def Scramble(s1, s2):
+            # 相等则True
+            if s1 == s2: return True
+            # record记录s1和s2中字符
+            n, record = len(s1), [0]*26
+            for i in range(n):
+                record[ord(s1[i])-ord('a')] += 1
+                record[ord(s2[i])-ord('a')] -= 1
+            # 若遍历完s1和s2后，record回复原状，则s1和s2中字符相同
+            if record == [0]*26: return False
+            # 遍历分割点
+            for i in range(1,n):
+                # 两种分割方案
+                if Scramble(s1[:i],s2[:i]) and Scramble(s1[i:],s2[i:]):
+                    return True
+                if Scramble(s1[:i],s2[n-i:]) and Scramble(s1[i:],s2[:n-i]):
+                    return True
+            return False
+        return Scramble(s1, s2)
+    
+    # 动态规划
+    # 长度为n的字符串可由更短长度的字符串判断
+    class Solution:
+    def isScramble(self, s1: str, s2: str) -> bool:
+        n = len(s1)
+        if n != len(s2): return False
+        # record[长度][s1的起始位置][s2的起始位置]
+        record = [[[False]*n for _ in range(n)] for _ in range(n+1)]
+        # 初始化
+        for i in range(n):
+            for j in range(n):
+                if s1[i] == s2[j]:
+                    record[1][i][j] = True
+        # 三重遍历[长度][s1的起始位置][s2的起始位置]
+        for l in range(2,n+1):
+            for i in range(n-l+1):
+                for j in range(n-l+1):
+                    # 遍历可能的拆分点
+                    for k in range(1,l):
+                        if record[k][i][j] and record[l-k][i+k][j+k]:
+                            record[l][i][j] = True
+                            break
+                        if record[k][i][j+l-k] and record[l-k][i+k][j]:
+                            record[l][i][j] = True
+                            break
+        return record[n][0][0]
