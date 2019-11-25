@@ -1,0 +1,28 @@
+# ip地址共四位，取值范围0-255，0需单独成一位
+# 递归
+class Solution:
+    def restoreIpAddresses(self, s: str) -> List[str]:
+        # 至少需要四个字符
+        if len(s) < 4: return []
+        # 递归函数，pre表示已经记录的前缀，n表示此次记录后还需几个数字
+        def segmentation(s, pre='', n=3):
+            # 此次记录后不再需要数字了，则全为归为1个数字
+            if n == 0:
+                # 判断首位是否为0
+                if s[0] == '0' and len(s) == 1:
+                    res.append(pre+s)
+                elif s[0] != '0' and 0 < int(s) < 256:
+                    res.append(pre+s)
+                return
+            # 判断首位是否为0
+            if s[0] == '0':
+                segmentation(s[1:], pre+s[0]+'.', n-1)
+                return
+            # 继续拆分
+            for i in range(min(3, len(s)-n)):
+                if 0 < int(s[:i+1]) < 256:
+                    segmentation(s[i+1:], pre+s[:i+1]+'.', n-1)
+            return
+        res = []
+        segmentation(s, pre='', n=3)
+        return res
