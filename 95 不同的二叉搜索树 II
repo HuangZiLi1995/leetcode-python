@@ -1,0 +1,48 @@
+# 递归
+# 遍历可选择的根节点
+# 比根节点小的放入左子树
+# 比根节点大的放入右字数
+class Solution:
+    def generateTrees(self, n: int) -> List[TreeNode]:
+        if n==0: return []
+        # 递归函数
+        def generateSubTree(low, up):
+            # 如果无可选择的数，则返回
+            if low>up: return [None]
+            res = []
+            # 遍历可选择的根节点
+            for i in range(low, up+1):
+                # 建立左右子树
+                left_nodes = generateSubTree(low, i-1)
+                right_nodes = generateSubTree(i+1, up)
+                # 建立根节点，将左右子树与根节点接上
+                for left in left_nodes:
+                    for right in right_nodes:
+                        root = TreeNode(i)
+                        root.left = left
+                        root.right = right
+                        res.append(root)
+            return res
+        return generateSubTree(1, n)
+
+# 记忆化搜索
+class Solution:
+    def generateTrees(self, n: int) -> List[TreeNode]:
+        if n==0: return []
+        memo = {}
+        def generateSubTree(low, up):
+            if low>up: return [None]
+            if (low,up) in memo.keys(): return memo[(low,up)]
+            res = []
+            for i in range(low, up+1):
+                left_nodes = generateSubTree(low, i-1)
+                right_nodes = generateSubTree(i+1, up)
+                for left in left_nodes:
+                    for right in right_nodes:
+                        root = TreeNode(i)
+                        root.left = left
+                        root.right = right
+                        res.append(root)
+                memo[(low,up)] = res
+            return res
+        return generateSubTree(1, n)
