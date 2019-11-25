@@ -1,0 +1,15 @@
+# 中序遍历，先左，再中，后右
+class Solution:
+    def inorderTraversal(self, root: TreeNode) -> List[int]:
+        def inOrder(root):
+            if not root: return []
+            res = []
+            if root.left:
+                res.extend(inOrder(root.left))
+            res.extend([root.val])
+            if root.right:
+                res.extend(inOrder(root.right))
+            return res
+        return inOrder(root)
+# 时间复杂度O(n)
+# 空间复杂度O(n)
