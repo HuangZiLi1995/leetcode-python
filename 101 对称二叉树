@@ -1,0 +1,22 @@
+# 检查两棵树是否对称
+# 首先看根节点是否对称
+# 在看起其两颗子树是否对称
+# 左子树的左子树对应右子树的右子树
+# 左子树的右子树对应右子树的左子树
+class Solution:
+    def isSymmetric(self, root: TreeNode) -> bool:
+        if not root:
+            return True
+        # 递归检查子树
+        def isMirror(left, right):
+            if not left and not right:
+                return True
+            elif not left or not right:
+                return False
+            elif left.val != right.val:
+                return False
+            return isMirror(left.left, right.right) and isMirror(left.right, right.left)
+        # root节点并不需要检查，无节点与之对称
+        return isMirror(root.left, root.right)
+# 时间复杂度O(n)
+# 空间复杂度O(n)
