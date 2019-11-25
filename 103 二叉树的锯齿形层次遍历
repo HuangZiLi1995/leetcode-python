@@ -1,0 +1,30 @@
+# 迭代，每次一层，与第102题相似
+# 加入reverse来记录是否逆序，采用不同的插入方式
+class Solution:
+    def zigzagLevelOrder(self, root: TreeNode) -> List[List[int]]:
+        if not root: return []
+        # 记录待处理节点和已经处理的值，以及reverse标记
+        nodes, vals, reverse = [root], [], False
+        while nodes:
+            # 下一层的节点和该层的值
+            level_nodes, level_vals = [], []
+            for node in nodes:
+                # 根据reverse标记来决定插入的点
+                if reverse:
+                    # 逆序插入最前面
+                    level_vals.insert(0, node.val)
+                else:
+                    # 正序则append
+                    level_vals.append(node.val)
+                # 加入下一层的节点
+                if node.left:
+                    level_nodes.append(node.left)
+                if node.right:
+                    level_nodes.append(node.right)
+            # 反转标记
+            reverse = not reverse
+            vals.append(level_vals) 
+            nodes = level_nodes
+        return vals
+# 时间复杂度O(n)
+# 空间复杂度O(n)
