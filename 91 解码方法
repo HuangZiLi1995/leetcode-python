@@ -1,0 +1,45 @@
+# 动态规划，和爬楼梯相似
+# 遍历字符
+# 如果当前字符能和前一个字符组合，则其能由倒数第三个字符+走两步到达
+# 如果其能单独形成一个字符（非0），则其能由倒数第二个字符+走一步达到
+class Solution:
+    def numDecodings(self, s: str) -> int:
+        # 如果字符串为空，或者第一个字符为0，则不能有效字符
+        if not s or s[0]=='0': return 0
+        record = [0] * len(s)
+        # 第一个字符只有一种可能解码方式
+        record[0] = 1
+        # 如只有一个字符则返回record[0]
+        if len(s)==1: return record[0]
+        # 计算第二个字符
+        # 如果为0，则不能单独解码，需和第一位一起解码
+        if s[1] == '0':
+            if 0 < int(s[:2]) < 27:
+                record[1] = 1
+            else:
+                return 0
+        # 如果不为0，则可单独解码，也可与第一位一起解码
+        else:
+            if 0 < int(s[:2]) < 27:
+                record[1] = 2
+            else:
+                record[1] = 1
+        # 解码后续字符，与第二位类似 
+        for i in range(2, len(s)):
+            if s[i] == '0':
+                if s[i-1] == '0':
+                    return 0
+                if 0 < int(s[i-1:i+1]) <= 26:
+                    record[i] = record[i-2]
+                else:
+                    return 0
+            else:
+                if s[i-1] == '0':
+                    record[i] = record[i-1]
+                elif 0 < int(s[i-1:i+1]) < 27:
+                    record[i] = record[i-1] + record[i-2]
+                else:
+                    record[i] = record[i-1]
+        return record[-1]
+# 时间复杂度O(n)
+# 空间复杂度O(n)
