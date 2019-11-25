@@ -1,0 +1,26 @@
+# 首先判断长度是否相等
+# 逐一判断字符是否相等
+# 记忆化搜索
+class Solution:
+    def isInterleave(self, s1: str, s2: str, s3: str) -> bool:
+        l1, l2 = len(s1), len(s2)
+        if l1+l2 != len(s3): return False
+        # 存储(i,j):结果，记录s1和s2在i,j之后能否匹配成功
+        memo = {}
+        def backtrack(i=0, j=0, k=0):
+            if (i,j) in memo.keys():
+                return memo[(i,j)]
+            # 如果有一个字符串已经用完，则匹配另一个字符串即可
+            if i == l1:
+                memo[(i,j)] = (s3[k:]==s2[j:])
+                return memo[(i,j)]
+            if j == l2: 
+                memo[(i,j)] = (s3[k:]==s1[i:])
+                return memo[(i,j)]
+            # 将s1[i],s2[j]与s3[k]比较，满足条件，则进行下一字符的比较
+            if (s1[i]==s3[k] and backtrack(i+1,j,k+1)) or (s2[j]==s3[k] and backtrack(i,j+1,k+1)):
+                memo[(i,j)] = True
+            else:
+                memo[(i,j)] = False
+            return memo[(i,j)]
+        return backtrack()
