@@ -1,0 +1,17 @@
+# 递归
+# 一个一个节点比较即可
+class Solution:
+    def isSameTree(self, p: TreeNode, q: TreeNode) -> bool:
+        if not p and not q:
+            return True
+        if not p:
+            return False
+        if not q:
+            return False
+        if p.val != q.val:
+            return False
+        left = self.isSameTree(p.left, q.left)
+        right = self.isSameTree(p.right, q.right)
+        return left and right
+# 时间复杂度O(n)
+# 空间复杂度O(n)
