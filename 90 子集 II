@@ -1,0 +1,22 @@
+# 先排序，方便处理重复
+# 重复的处理方式：不要在同一个位置放相同的数字
+# 递归，每次加入一个数字
+class Solution:
+    def subsetsWithDup(self, nums: List[int]) -> List[List[int]]:
+        if not nums:
+            return [[]]
+        # 递归函数
+        def backtrack(nums, record=[]):
+            # 不再加入数字
+            res.append(record)
+            # 遍历剩下的数字，加一个数字进入数组
+            for i in range(len(nums)):
+                if i!=0 and nums[i]==nums[i-1]: continue
+                backtrack(nums[i+1:], record+[nums[i]])
+            return
+        nums.sort()
+        res = []
+        backtrack(nums)
+        return res
+# 时间复杂度O(2**n)
+# 空间复杂度O(2**n)
