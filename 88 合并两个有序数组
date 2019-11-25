@@ -1,0 +1,27 @@
+# 原地插入，如果从前向后排序，nums1中的数字可能会丢失
+# 故从后向前排序
+class Solution:
+    def merge(self, nums1: List[int], m: int, nums2: List[int], n: int) -> None:
+        """
+        Do not return anything, modify nums1 in-place instead.
+        """
+        if not n: return nums1
+        # 双指针，指向两个数组的末尾
+        i, j = m-1, n-1
+        # k为指向待排序点的指针
+        for k in range(m+n-1,-1,-1):
+            # 如果nums1中还有数且nums1[i]>nums2[j]
+            if (i>-1 and nums1[i]>nums2[j]):
+                # 将nums1[i]插入，将i向前移动一位
+                nums1[k] = nums1[i]
+                i -= 1
+            # 否则
+            else:
+                # 将nums2[j]插入，将j相前移动一位
+                nums1[k] = nums2[j]
+                j -= 1
+                if j < 0: 
+                    break
+        return nums1
+# 时间复杂度O(n+m)
+# 空间复杂度O(1)
