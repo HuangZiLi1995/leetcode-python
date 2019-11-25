@@ -1,0 +1,38 @@
+# 相同数目的数可以构成的树的数目是相同
+# 以固定根节点构成的根的数目为
+# 左子树数目*右子树数目
+
+# 记忆化搜索
+class Solution:
+    def numTrees(self, n: int) -> int:
+        if n==0: return 0
+        memo = [None] * (n+1)
+        # 初始化memo
+        memo[0], memo[1] = 1, 1
+        # 递归计算memo
+        def numSubTrees(n):
+            if memo[n]: return memo[n]
+            res = 0
+            # 遍历可能的根节点
+            for i in range(n):
+                num_left = numSubTrees(i)
+                num_right = numSubTrees(n-i-1)
+                res += num_left*num_right
+            memo[n] = res
+            return res
+        return numSubTrees(n)
+# 时间复杂度O(n2)
+# 空间复杂度O(n)
+
+# 动态规划
+class Solution:
+    def numTrees(self, n: int) -> int:
+        if n==0: return 0
+        memo = [0] * (n+1)
+        memo[0], memo[1] = 1, 1
+        for i in range(2,n+1):
+            for j in range(i):
+                memo[i] += memo[j]*memo[i-j-1]
+        return memo[n]
+# 时间复杂度O(n2)
+# 空间复杂度O(n)
