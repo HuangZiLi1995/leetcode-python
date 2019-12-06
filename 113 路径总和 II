@@ -1,0 +1,25 @@
+### 解题思路
+递归
+深度优先比遍历树
+如果该路径之和等于目标值，则回溯补全该路径
+
+时间复杂度O(N)
+空间复杂度O(N)
+### 代码
+```python3
+class Solution:
+    def pathSum(self, root: TreeNode, total: int) -> List[List[int]]:
+        if not root:
+            return []      
+        if not root.left and not root.right:
+            if root.val == total:
+                return [[root.val]]
+            else:
+                return None
+        left = self.pathSum(root.left, total-root.val)
+        right = self.pathSum(root.right, total-root.val)
+        res = []
+        if left: res.extend(left)
+        if right: res.extend(right)
+        return [[root.val]+re for re in res]
+```
