@@ -1,0 +1,30 @@
+### 解题思路
+迭代法
+先自顶向下层次遍历
+再倒序
+
+时间复杂度O(n)
+空间复杂度O(n)
+
+### 代码
+```python3
+class Solution:
+    def levelOrderBottom(self, root: TreeNode) -> List[List[int]]:
+        if not root:
+            return []
+        vals = []
+        nodes = [root]
+        while nodes:
+            level_vals = []
+            level_nodes = []
+            for node in nodes:
+                level_vals.append(node.val)
+                if node.left:
+                    level_nodes.append(node.left)
+                if node.right:
+                    level_nodes.append(node.right)
+            vals.append(level_vals)
+            nodes = level_nodes
+        vals.reverse()
+        return vals
+```
