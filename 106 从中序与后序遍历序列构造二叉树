@@ -1,0 +1,19 @@
+### 解题思路
+递归法
+postorder的最后一个数位根
+找到inorder中的根，其左边为左子树，右边为右子树
+递归找左右子树中的根及其左右子树
+
+### 代码
+
+```python3
+class Solution:
+    def buildTree(self, inorder: List[int], postorder: List[int]) -> TreeNode:
+        if not postorder: return None
+        x = postorder[-1]
+        i = inorder.index(x)
+        root = TreeNode(x)
+        root.left = self.buildTree(inorder[:i],postorder[:i])
+        root.right = self.buildTree(inorder[i+1:],postorder[i:-1])
+        return root
+```
