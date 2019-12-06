@@ -1,0 +1,21 @@
+### 解题思路
+自顶向下遍历树，自底向上回溯最小高度
+
+时间复杂度O(n)
+空间复杂度O(n)
+
+### 代码
+```python3
+class Solution:
+    def minDepth(self, root: TreeNode) -> int:
+        if not root: return 0
+        if not root.left and not root.right:
+            return 1
+        left_min = self.minDepth(root.left)
+        right_min = self.minDepth(root.right)
+        if not right_min:
+            return left_min + 1
+        if not left_min:
+            return right_min + 1
+        return min(left_min, right_min) + 1
+```
