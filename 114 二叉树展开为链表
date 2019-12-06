@@ -1,0 +1,28 @@
+### 解题思路
+首先，先序遍历树，将值存储在列表中
+再根据列表创建树
+
+时间复杂度O(N)
+空间复杂度O(N)
+
+### 代码
+```python3
+class Solution:
+    def flatten(self, root: TreeNode) -> None:
+        if not root: return root
+        memo = []
+        def preorder(root):
+            memo.append(root.val)
+            if root.left: preorder(root.left)
+            if root.right: preorder(root.right)
+            return
+        preorder(root)
+        i, n = 1, len(memo)
+        cur = root
+        while i < n:
+            cur.left = None
+            cur.right = TreeNode(memo[i])
+            cur = cur.right
+            i += 1
+        return
+```
