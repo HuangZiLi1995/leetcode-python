@@ -1,0 +1,23 @@
+### 解题思路
+回溯，自顶向下遍历树，自底向上回溯高度
+回溯函数定义：如果为平衡二叉树则返回高度，否则返回-1
+
+时间复杂度O(n)
+空间复杂度O(n)：函数开栈
+
+### 代码
+```python3
+class Solution:
+    def isBalanced(self, root: TreeNode) -> bool:
+        
+        def depth(root):
+            if not root: return 0
+            left = depth(root.left)
+            if left==-1: return -1
+            right = depth(root.right)
+            if right==-1: return -1
+            if abs(left-right)>1: return -1
+            return max(left,right) + 1
+        
+        return depth(root) != -1
+```
