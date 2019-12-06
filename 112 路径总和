@@ -1,0 +1,15 @@
+### 解题思路
+递归法
+自上向下遍历树
+检查是否是否为叶节点，再考查其值是否为剩余所需的数
+若不是叶节点，则进入其左子树和右子树
+
+### 代码
+```python3
+class Solution:
+    def hasPathSum(self, root: TreeNode, total: int) -> bool:
+        if not root: return False
+        if not root.left and not root.right and root.val == total:
+            return True
+        return self.hasPathSum(root.left, total-root.val) or self.hasPathSum(root.right, total-root.val)
+```
