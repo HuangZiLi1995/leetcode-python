@@ -1,0 +1,29 @@
+### 解题思路
+先遍历链表，读取链表的值存储字列表中
+再将列表转化为树
+满二叉树也是平衡二叉树，故构建满二叉树
+去中间值为根，其左边为左子树，右边为右子树
+再递归穿件左右子树的左右子树
+
+时间复杂度O(N)
+空间复杂度O(N)
+
+### 代码
+```
+class Solution:
+    def sortedListToBST(self, head: ListNode) -> TreeNode:
+        memo = []
+        while head:
+            memo.append(head.val)
+            head = head.next
+        
+        def listToBST(memo):
+            if not memo: return None
+            mid = len(memo)//2
+            root = TreeNode(memo[mid])
+            root.left = listToBST(memo[:mid])
+            root.right = listToBST(memo[mid+1:])
+            return root
+        
+        return listToBST(memo)
+```
