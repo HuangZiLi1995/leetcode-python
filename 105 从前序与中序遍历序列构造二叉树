@@ -1,0 +1,13 @@
+# 递归
+# 前序遍历的第一个为根节点
+# 在中序遍历中找到根节点，其左边为左子树，右边为右子树
+# 再递归构建左右子树
+class Solution:
+    def buildTree(self, preorder: List[int], inorder: List[int]) -> TreeNode:
+        if not preorder: return None
+        x = preorder[0]
+        i = inorder.index(x)
+        root = TreeNode(x)
+        root.left = self.buildTree(preorder[1:i+1], inorder[:i])
+        root.right = self.buildTree(preorder[i+1:], inorder[i+1:])
+        return root
