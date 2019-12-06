@@ -1,0 +1,16 @@
+### 解题思路
+满二叉树也是高度平衡二叉树的一种
+取中间的数为根，左边为左子树，右边为右子树
+递归建立左右子树
+
+### 代码
+```python3
+class Solution:
+    def sortedArrayToBST(self, nums: List[int]) -> TreeNode:
+        if not nums: return None
+        mid = len(nums) // 2
+        root = TreeNode(nums[mid])
+        root.left = self.sortedArrayToBST(nums[:mid])
+        root.right = self.sortedArrayToBST(nums[mid+1:])
+        return root
+```
