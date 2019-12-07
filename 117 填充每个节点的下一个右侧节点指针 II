@@ -1,0 +1,31 @@
+### 解题思路
+与第116题相似，采用层次遍历
+每一层的头结点为head，其next指向该层的下一个结点
+使用next指针可以不断地访问改成的节点，当其为None时说明该层节点已遍历完毕
+为方便连接下一层，为下一层（待连接层）设置虚拟头结点dummy
+当访问的节点存在左子节点，则连接到dummy后，对右子节点处理方式相同
+连接好的层的head即为dummy.next
+循环迭代每一层
+
+时间复杂度O(N)
+空间复杂度O(1)
+
+### 代码
+```python3
+class Solution:
+    def connect(self, root: 'Node') -> 'Node':
+        head = root
+        while head:
+            dummy = Node()
+            pre, cur = dummy, head
+            while cur:
+                if cur.left: 
+                    pre.next = cur.left
+                    pre = pre.next
+                if cur.right: 
+                    pre.next = cur.right
+                    pre = pre.next
+                cur = cur.next
+            head = dummy.next
+        return root
+```
