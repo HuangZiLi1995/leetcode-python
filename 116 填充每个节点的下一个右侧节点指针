@@ -1,0 +1,30 @@
+### 解题思路
+层次遍历二叉树
+从左到右遍历每层的节点
+将左边节点的next指向右边节点，将最后一个节点的next置为None
+遍历每层的节点时，如果存在子节点，则从左向右保存子节点
+循环迭代每层的节点
+
+时间复杂度O(n)
+空间复杂度O(n)
+
+### 代码
+```python3
+class Solution:
+    def connect(self, root: 'Node') -> 'Node':
+        if not root: return root
+        nodes = [root]
+        while nodes:
+            next_nodes = []
+            for i in range(len(nodes)-1):
+                nodes[i].next = nodes[i+1]
+                if nodes[i].left:
+                    next_nodes.append(nodes[i].left)
+                    next_nodes.append(nodes[i].right)
+            nodes[-1].next = None
+            if nodes[-1].left:
+                next_nodes.append(nodes[-1].left)
+                next_nodes.append(nodes[-1].right)
+            nodes = next_nodes
+        return root
+```
