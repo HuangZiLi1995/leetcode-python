@@ -1,0 +1,17 @@
+### 解题思路
+由底至上，每个位置可由下面一行紧邻的两个位置到达，选择其中较短的路径即可
+
+### 代码
+
+```python3
+class Solution:
+    def minimumTotal(self, triangle: List[List[int]]) -> int:
+        if not triangle: return None   
+        res = triangle[-1][:]
+        i = len(triangle)-2
+        while i >= 0:
+            memo = res
+            res = [triangle[i][j]+min(memo[j:j+2]) for j in range(len(triangle[i]))]
+            i -= 1
+        return res[0]
+```
