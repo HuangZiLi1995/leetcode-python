@@ -1,0 +1,17 @@
+### 解题思路
+在第118题上改变，每次只用记录前一行数据即可
+
+### 代码
+
+```python3
+class Solution:
+    def getRow(self, rowIndex: int) -> List[int]:
+        if rowIndex == 0: return [1]
+        if rowIndex == 1: return [1,1]
+        k, memo = 1, [1,1]
+        while k < rowIndex:
+            res = [1]+[memo[i]+memo[i-1] for i in range(1,len(memo))]+[1]
+            memo = res
+            k += 1
+        return res
+```
