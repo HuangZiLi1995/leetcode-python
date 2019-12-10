@@ -1,0 +1,19 @@
+### 解题思路
+遍历prices，记录遍历过的prices中的最小值
+当前price与记录的最小值得差即为所获利润
+记录最大利润
+
+### 代码
+
+```python3
+class Solution:
+    def maxProfit(self, prices: List[int]) -> int:
+        if not prices: return 0
+        low, res = prices[0], 0
+        for i in range(1, len(prices)):
+            if prices[i] > low:
+                res = max(res, prices[i]-low)
+            else:
+                low = prices[i]
+        return res
+```
