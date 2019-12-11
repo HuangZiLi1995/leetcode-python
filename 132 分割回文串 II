@@ -1,0 +1,59 @@
+### 解题思路
+动态规划
+memo[i]表示s[0:i]子串的最少分割次数
+遍历子串前的字符，当s[j]==s[i]时，检测memo[j:i+1]时否为回文串
+若是，则其可由s[:j]和s[j:i+1]构成，即memo[j-1]+1次分割，记录最小值即可
+
+优化：用record记录相同字符的位置
+
+时间复杂度O(N**3)
+空间复杂度O(N)
+
+### 代码
+
+```python3
+class Solution:
+    def minCut(self, s: str) -> int:
+        memo = list(range(len(s)))
+        record = {s[0]:[0]}
+        for i in range(1,len(s)):
+            if s[i] in record.keys():
+                record[s[i]].append(i)
+            else:
+                record[s[i]] = [i]
+            if s[0]==s[i] and s[:i+1]==s[i::-1]:
+                memo[i] = 0
+                continue
+            for j in record[s[i]]:
+                if s[j:i+1]==s[i:j-1:-1]:
+                    memo[i] = min(memo[i], memo[j-1]+1)
+        return memo[-1]
+```
+
+### 解题思路
+优化：用dp[j][i]记录s[j:i+1]是否为回文
+
+时间复杂度O(N**2)
+空间复杂度O(N**2)
+
+### 代码
+
+```python3
+class Solution:
+    def minCut(self, s: str) -> int:
+        n = len(s)
+        memo = list(range(n))
+        dp = [[False]*n for _ in range(n)]
+        for i in range(n):
+            for j in range(i+1):
+                if s[j]==s[i] and (i-j<2 or dp[j+1][i-1]):
+                    dp[j][i] = True
+                    if j == 0: 
+                        memo[i] = 0
+                    else:
+                        memo[i] = min(memo[i],memo[j-1]+1)
+        return memo[-1]
+        
+```
+
+可以结合前两种时间上的优化
