@@ -1,0 +1,27 @@
+### 解题思路
+遍历nums中num，以num为起始
+将num递增，检查其是否在nums中，直至其不再其中，则返回长度
+
+优化：
+哈希化：便于查找
+剪枝：若num-1在nums中，则说明以其为起始的长度小于以num-1为起始的长度，则剪枝
+
+时间复杂度O(n)
+空间复杂度O(n)
+
+### 代码
+
+```python3
+class Solution:
+    def longestConsecutive(self, nums: List[int]) -> int:
+        if not nums: return 0
+        max_length, nums = 1, set(nums)
+        for num in nums:
+            if num-1 not in nums:
+                n, length = num, 1
+                while n+1 in nums:
+                    length += 1
+                    n += 1
+                max_length = max(max_length, length)
+        return max_length
+```
