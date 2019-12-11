@@ -1,0 +1,56 @@
+### 解题思路
+与第126题类似，建立查找表，和已访问列表
+不过这里采用了双相搜索
+记录的会step而不是路径
+
+时间复杂度O(n)
+
+### 代码
+
+```python3
+class Solution:
+    def ladderLength(self, beginWord: str, endWord: str, wordList: List[str]) -> int:
+        if not beginWord or not endWord or endWord not in wordList:
+            return 0
+        
+        record = {}
+        wordList.append(beginWord)
+        for word in wordList:
+            for i in range(len(word)):
+                key = word[:i]+'*'+word[i+1:]
+                if key in record.keys():
+                    record[key].append(word)
+                else:
+                    record[key] = [word]
+
+        pre, post = [beginWord], [endWord]
+        visit = set([beginWord, endWord])
+        step = 1
+        while pre and post:
+            step += 1
+            level_pre = []
+            for node in pre:
+                for i in range(len(node)):
+                    key = node[:i]+'*'+node[i+1:]
+                    for next_node in record[key]:
+                        if next_node in post:
+                            return step
+                        if next_node not in visit:
+                            visit.add(next_node)
+                            level_pre.append(next_node)
+            pre = level_pre
+            
+            step += 1
+            level_post = []
+            for node in post:
+                for i in range(len(node)):
+                    key = node[:i]+'*'+node[i+1:]
+                    for next_node in record[key]:
+                        if next_node in pre:
+                            return step
+                        if next_node not in visit:
+                            visit.add(next_node)
+                            level_post.append(next_node)
+            post = level_post
+        return 0
+```
