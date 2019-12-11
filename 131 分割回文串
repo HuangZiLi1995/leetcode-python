@@ -1,0 +1,25 @@
+### 解题思路
+递归
+遍历所有的分割点，若左边为回文串，则递归进入右边
+
+### 代码
+
+```python3
+class Solution:
+    def partition(self, s: str) -> List[List[str]]:
+        if not s:
+            return []
+
+        def backtrack(s, re=[]):
+            if not s:
+                res.append(re[:])
+                return
+            for i in range(1, len(s)+1):
+                if s[:i] == s[i-1::-1]:
+                    backtrack(s[i:], re+[s[:i]])
+            return
+        
+        res = []
+        backtrack(s)
+        return res
+```
