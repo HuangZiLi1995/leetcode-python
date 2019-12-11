@@ -1,0 +1,48 @@
+### 解题思路
+当且仅当O与边界相连时，其不被X包围
+遍历矩阵边界，将与边界O相连的O标记为None（回溯法）
+在遍历矩阵，将剩下的O改为X，将None改为O即可
+
+时间复杂度O(n)
+空间复杂度O(1)
+
+
+### 代码
+
+```python3
+class Solution:
+    def solve(self, board: List[List[str]]) -> None:
+        """
+        Do not return anything, modify board in-place instead.
+        """
+        if not board: return board
+        
+        def backtrack(board, i, j):
+            direction = [[1,0], [0,1], [-1,0], [0,-1]]
+            for d in direction:
+                x, y = i+d[0], j+d[1]
+                if 0<=x<len(board) and 0<=y<len(board[x]) and board[x][y]=='O':
+                    board[x][y] = None
+                    backtrack(board, x, y)
+            return
+        
+        for i in range(len(board)):
+            if i == 0 or i == len(board)-1:
+                for j in range(len(board[i])):
+                    if board[i][j] == 'O':
+                        board[i][j] = None
+                        backtrack(board, i, j)
+            else:
+                for j in [0, len(board[i])-1]:
+                    if board[i][j] == 'O':
+                        board[i][j] = None
+                        backtrack(board, i, j)
+        
+        for i in range(len(board)):
+            for j in range(len(board[i])):
+                if board[i][j] == 'O':
+                    board[i][j] = 'X'
+                elif board[i][j] == None:
+                    board[i][j] = 'O'
+        return
+```
