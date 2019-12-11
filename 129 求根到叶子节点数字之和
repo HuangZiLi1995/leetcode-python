@@ -1,0 +1,37 @@
+### 解题思路
+迭代，层次遍历
+若节点为叶子节点，则该数已经完成，记录该数
+若不是则深入其叶子节点，将其叶子节点的值加到该节点的值后边
+循环迭代
+最后将所有的值相加即可
+
+时间复杂度O(n)
+空间复杂度O(n)
+
+### 代码
+
+```python3
+class Solution:
+    def sumNumbers(self, root: TreeNode) -> int:
+        if not root: return 0
+        
+        res, nodes = [], [root]
+        nums = [str(root.val)]
+        while nodes:
+            next_nodes = []
+            next_nums = []
+            for i in range(len(nodes)):
+                if not nodes[i].left and not nodes[i].right:
+                    res.append(nums[i])
+                    continue
+                if nodes[i].left:
+                    next_nodes.append(nodes[i].left)
+                    next_nums.append(nums[i]+str(nodes[i].left.val))
+                if nodes[i].right:
+                    next_nodes.append(nodes[i].right)
+                    next_nums.append(nums[i]+str(nodes[i].right.val))
+            nodes = next_nodes
+            nums = next_nums
+                    
+        return sum([int(num) for num in res])
+```
