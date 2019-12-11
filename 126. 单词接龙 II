@@ -1,0 +1,53 @@
+### 解题思路
+每次可改变一个字母，将单词设为word[:i]+'*'+word[i+1:]的形式
+遍历所有单词，建立查找表，以word[:i]+'*'+word[i+1:]为键，单词为值
+
+以beginword为起始位置，改变每个字母，在查找表中找出下一个可能的单词
+并将查找过的单词设置为访问过，之后不再访问
+循环直至找到endword
+
+时间复杂度O(N)
+空间复杂度O(len*N)
+
+### 代码
+
+```python3
+class Solution:
+    def findLadders(self, beginWord: str, endWord: str, wordList: List[str]) -> List[List[str]]:
+        if not beginWord or not endWord or endWord not in wordList:
+            return []
+        
+        search_table = {}
+        if beginWord not in wordList:
+            wordList.append(beginWord)
+        for word in wordList:
+            for i in range(len(word)):
+                key = word[:i]+'*'+word[i+1:]
+                if key in search_table.keys():
+                    search_table[key].append(word)
+                else:
+                    search_table[key] = [word]
+        
+        routine = {beginWord:[[beginWord]]}
+        nodes = [beginWord]
+        visit = set([beginWord])
+        res = []
+        while nodes:
+            next_visit = set()
+            for node in nodes:
+                for i in range(len(node)):
+                    key = node[:i]+'*'+node[i+1:]
+                    for next_node in search_table[key]:
+                        if next_node not in visit:
+                            next_visit.add(next_node)
+                            if next_node not in routine.keys():
+                                routine[next_node] = []
+                            for path in routine[node]:
+                                routine[next_node].append(path+[next_node])
+            if endWord in routine.keys():
+                return routine[endWord]
+            nodes = list(next_visit)
+            visit = visit.union(next_visit)
+        
+        return []
+```
