@@ -1,0 +1,24 @@
+### 解题思路
+深度优先
+用字典保存原节点和其拷贝
+
+时间复杂度O(n)
+空间复杂度O(n)
+
+### 代码
+
+```python3
+class Solution:
+    def cloneGraph(self, node: 'Node') -> 'Node':
+        record = {}
+        
+        def dfs(node):
+            if node not in record.keys():
+                cloneNode = Node(node.val, [])
+                record[node] = cloneNode
+                for neighbor in node.neighbors:
+                    cloneNode.neighbors.append(dfs(neighbor))
+            return record[node]
+        
+        return dfs(node)
+```
