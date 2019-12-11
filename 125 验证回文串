@@ -1,0 +1,14 @@
+### 解题思路
+使用正则找出其中满足条件的字符，拼接起来，小写
+检查正序和逆序是否相同
+
+### 代码
+
+```python3
+class Solution:
+    def isPalindrome(self, s: str) -> bool:
+        s = ''.join(re.findall(r'[a-zA-Z0-9]', s)).lower()
+        n = len(s)
+        m = n//2
+        return s[:m] == s[:n-m-1:-1]
+```
