@@ -1,0 +1,25 @@
+### 解题思路
+深度优先
+用字典记录  原节点：复制节点
+当原节点不在字典中（即为复制过该节点），复制节点并记录
+当在字典中，则使其指向复制的节点
+
+时间复杂度O(N)
+空间复杂度O(N)
+
+### 代码
+
+```python3
+class Solution:
+    def copyRandomList(self, head: 'Node') -> 'Node':
+        memo = {}
+        def dfs(head):
+            if not head: return None
+            if head not in memo.keys():
+                copyhead = Node(head.val, None, None)
+                memo[head] = copyhead
+                copyhead.next = dfs(head.next)
+                copyhead.random = dfs(head.random)
+            return memo[head]
+        return dfs(head)
+```
