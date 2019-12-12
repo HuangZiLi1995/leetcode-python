@@ -1,0 +1,20 @@
+### 解题思路
+当sum(gas)<sum(cost)时，不能完成
+遍历加油站，设置变量reminder记录到达该站时剩余油量(reminder >= 0)
+当reminder (+gas[i]-cost[i]) < 0时表示不能到达下一站
+说明从当前选择位置出发不能完成目标
+则选择下一站为起始位置
+
+### 代码
+
+```python3
+class Solution:
+    def canCompleteCircuit(self, gas: List[int], cost: List[int]) -> int:
+        total, reminder, start = 0, 0, 0
+        for i in range(len(gas)):
+            reminder += gas[i]-cost[i]
+            total += gas[i]-cost[i]
+            while reminder < 0:
+                reminder, start = 0, i+1
+        return start if total>=0 else -1
+```
