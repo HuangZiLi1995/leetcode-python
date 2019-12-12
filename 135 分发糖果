@@ -1,0 +1,25 @@
+### 解题思路
+将相邻分解为左相邻与右相邻
+首先考虑左相邻，如果该人评分大于左边则糖果数为左边人+1
+右相邻同理
+则其应该分得的糖果数为两者之间的较大者
+
+时间复杂度O(N)
+空间复杂度O(N)
+
+### 代码
+
+```python3
+class Solution:
+    def candy(self, ratings: List[int]) -> int:
+        n = len(ratings)
+        left = [0] * n
+        for i in range(1,n):
+            if ratings[i] > ratings[i-1]:
+                left[i] = left[i-1] + 1
+        right = [0] * n
+        for i in range(n-2,-1,-1):
+            if ratings[i] > ratings[i+1]:
+                right[i] = right[i+1] + 1
+        return sum([1+max(left[i],right[i]) for i in range(n)])
+```
