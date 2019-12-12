@@ -1,0 +1,31 @@
+### 解题思路
+动态规划
+memo[i]表示s[:i]能否有wordDict构成
+遍历s中每隔位置，再遍历每个word
+若s[:i]==word，则memo[i]=True
+否则s[:i]=word+s[:i-len(word)],memo[i]=memo[i-len(word)]
+
+时间复杂度O(lens(s)*len(wordDict))
+空间复杂度O(len(s))
+
+### 代码
+
+```python3
+class Solution:
+    def wordBreak(self, s: str, wordDict: List[str]) -> bool:
+        if not s or not wordDict:
+            return False
+        
+        memo = [False] * (len(s)+1)
+        for i in range(1, len(s)+1):
+            for word in wordDict:
+                if len(word) > i:
+                    continue
+                if s[:i] == word:
+                    memo[i] = True
+                    break
+                memo[i] = memo[i-len(word)] and s[i-len(word):i] == word
+                if memo[i]:
+                    break
+        return memo[-1]
+```
