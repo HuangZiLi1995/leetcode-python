@@ -1,0 +1,25 @@
+### 解题思路
+与第136题类似
+用字典记录 数值：次数
+若次数到达3则弹出
+最后字典中剩下的即为出现一次的数
+
+时间复杂度O(N)
+空间复杂度O(N)
+
+### 代码
+
+```python3
+class Solution:
+    def singleNumber(self, nums: List[int]) -> int:
+        memo = {}
+        for num in nums:
+            if num in memo.keys():
+                if memo[num] == 2:
+                    memo.pop(num)
+                else:
+                    memo[num] += 1
+            else:
+                memo[num] = 1
+        return memo.popitem()[0]
+```
