@@ -1,0 +1,41 @@
+### 解题思路
+遍历nums
+用哈希表记录已经出现的数字，若再次出现则删除
+最后表中只剩下不重复的那个数
+
+时间复杂度O(N)
+空间复杂度O(N)
+
+### 代码
+
+```python3
+class Solution:
+    def singleNumber(self, nums: List[int]) -> int:
+        record = set()
+        for num in nums:
+            if num in record:
+                record.remove(num)
+            else:
+                record.add(num)
+        return record.pop()
+```
+
+### 解题思路
+异或操作
+a^a = 0
+a^0 = a
+异或具有交换性
+
+时间复杂度O(N)
+空间复杂度O(1)
+
+### 代码
+
+```python3
+class Solution:
+    def singleNumber(self, nums: List[int]) -> int:
+        res = 0
+        for num in nums:
+            res ^= num
+        return res
+```
