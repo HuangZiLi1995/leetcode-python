@@ -1,0 +1,16 @@
+### 解题思路
+与第141题类似，不过返回的为节点
+
+### 代码
+
+```python3
+class Solution:
+    def detectCycle(self, head: ListNode) -> ListNode:
+        record, cur = set(), head
+        while cur:
+            if cur in record:
+                return cur
+            record.add(cur)
+            cur = cur.next
+        return None
+```
