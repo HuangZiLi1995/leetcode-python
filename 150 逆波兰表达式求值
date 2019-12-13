@@ -1,0 +1,25 @@
+### 解题思路
+使用栈
+
+### 代码
+
+```python3
+class Solution:
+    def evalRPN(self, tokens: List[str]) -> int:
+        record = []
+        for token in tokens:
+            if token not in ['+', '-', '*', '/']:
+                record.append(int(token))
+                continue
+            num1 = record.pop()
+            num2 = record.pop()
+            if token == '+':
+                record.append(num2+num1)
+            elif token == '-':
+                record.append(num2-num1)
+            elif token == '*':
+                record.append(num2*num1)
+            else:
+                record.append(int(num2/num1))
+        return record.pop()
+```
