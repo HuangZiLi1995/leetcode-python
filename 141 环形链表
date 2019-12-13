@@ -1,0 +1,23 @@
+### 解题思路
+记录已经访问过的节点
+若正在遍历的节点存在于记录中，则有环
+
+优化：哈希表查找
+
+时间复杂度O(N)
+空间复杂度O(N)
+
+### 代码
+
+```python3
+class Solution:
+    def hasCycle(self, head: ListNode) -> bool:
+        if not head: return False
+        record, cur = set(), head
+        while cur:
+            if cur in record:
+                return True
+            record.add(cur)
+            cur = cur.next
+        return False
+```
