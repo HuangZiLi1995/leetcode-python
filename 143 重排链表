@@ -1,0 +1,30 @@
+### 解题思路
+先将所有的节点读取出来，再排序
+
+### 代码
+
+```python3
+class Solution:
+    def reorderList(self, head: ListNode) -> None:
+        nodes = []
+        cur = head
+        while cur:
+            nodes.append(cur)
+            cur = cur.next
+        
+        dummy = ListNode(None)
+        d = dummy
+        n = len(nodes)
+        for i in range(n//2):
+            d.next = nodes[i]
+            d = d.next
+            d.next = nodes[n-1-i]
+            d = d.next
+        
+        if n % 2 == 1:
+            d.next = nodes[n//2]
+            d = d.next
+        
+        d.next = None
+        return dummy.next
+```
