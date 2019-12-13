@@ -1,0 +1,44 @@
+### 解题思路
+两点确定一条直线
+一重循环确定第一个点
+二重循环确定第二个点
+在考虑剩余点在不在直线上
+因为用斜率存在精度温度，故采用乘法
+
+优化：
+先处理重复的点记录不同点个数，只用处理不同的点即可
+第一个点确定后，第二个点只用考虑之后的点即可
+第二个点确定后，第三个点只用考虑之后的点即可
+一个点确定后，记录剩余的点是否访问过，访问过则不用再访问
+
+时间复杂度O(n**3)
+空间复杂度O(1)
+
+### 代码
+
+```python3
+class Solution:
+    def maxPoints(self, points: List[List[int]]) -> int:
+        p = {}
+        for x, y in points:
+            if (x, y) in p:
+                p[(x, y)] += 1
+            else:
+                p[(x, y)] = 1
+        max_n = 0
+        points = list(p.keys())
+        if len(points) < 3:
+            return sum(p.values())
+        for i in range(len(points)-1):
+            visit = set()
+            for j in range(i+1, len(points)):
+                if points[j] in visit: continue
+                visit.add(points[j])
+                n = p[points[i]] + p[points[j]]
+                for k in range(j+1, len(points)):
+                    if (points[k][1]-points[i][1])*(points[k][0]-points[j][0]) == (points[k][1]-points[j][1])*(points[k][0]-points[i][0]):
+                        visit.add(points[k])
+                        n += p[points[k]]
+                max_n = max(max_n, n)
+        return max_n
+```
