@@ -1,0 +1,46 @@
+### 解题思路
+先采用第139题解法检查是否能拆分
+在拆分
+
+动态规划
+dp[i]为s[:i]拆分结果
+1.检查s[:i]是否在词表中
+2.检查s[j:i]是否在词表中，若在则将s[j:i]拼接在dp[j]的结果后
+
+优化
+将wordDict哈希化，方便查找
+记录词表中的单词的长度范围，每次只用查找s[i]前的这几个字母
+
+### 代码
+
+```python3
+class Solution:
+    def wordBreak(self, s: str, wordDict: List[str]) -> List[str]:
+        if not wordDict: return []
+        wordLen = [len(word) for word in wordDict]
+        minLen, maxLen = min(wordLen), max(wordLen)
+        wordSet = set(wordDict)
+        n = len(s)
+        
+        memo = [False] * (n+1)
+        for i in range(minLen, n+1):
+            if s[:i] in wordSet: 
+                memo[i] = True
+                continue
+            for l in range(minLen, min(maxLen+1,i)):
+                if memo[i-l] and (s[i-l:i] in wordSet):
+                    memo[i] = True
+                    break
+        if not memo[-1]: return []
+        
+        dp = [[] for _ in range(n+1)]
+        for i in range(minLen, n+1):
+            if not memo[i]: continue
+            if s[:i] in wordSet:
+                dp[i].append(s[:i])
+            for l in range(minLen, min(maxLen+1,i)):
+                if memo[i-l] and (s[i-l:i] in wordSet):          
+                    for prewords in dp[i-l]:
+                        dp[i].append(prewords+' '+s[i-l:i])
+        return dp[-1]
+```
