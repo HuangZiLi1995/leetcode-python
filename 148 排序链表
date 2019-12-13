@@ -1,0 +1,36 @@
+### 解题思路
+快排（分治）
+
+时间复杂度O(nlog(n))
+空间复杂度O(1)
+
+### 代码
+
+```python3
+class Solution:
+    def sortList(self, head: ListNode) -> ListNode:
+        
+        def quickSort(head, end):
+            if head==end or head.next==end:
+                return head
+            
+            dummy = ListNode(None)
+            dummy.next = head
+            pre = dummy
+            equ = head
+            cur = head
+            while cur.next != end:
+                if cur.next.val < head.val:
+                    pre.next, cur.next.next, cur.next = cur.next, equ, cur.next.next
+                    pre = pre.next
+                elif cur.next.val > head.val:
+                    cur = cur.next
+                else:
+                    pre.next, cur.next.next, cur.next = cur.next, equ, cur.next.next
+                    equ = pre.next
+            dummy.next = quickSort(dummy.next, pre.next)
+            head.next = quickSort(head.next, end)
+            return dummy.next
+        
+        return quickSort(head, None)
+```
