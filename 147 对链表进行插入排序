@@ -1,0 +1,34 @@
+### 解题思路
+双重循环
+第一重遍历链表
+第二重遍历排序好的链表
+加入头结点，方便处理头结点
+
+时间复杂度O(n**2)
+空间复杂度O(n)
+
+### 代码
+
+```python3
+class Solution:
+    def insertionSortList(self, head: ListNode) -> ListNode:
+        dummy = ListNode(None)
+        dummy.next = head
+        cur = dummy
+        count = 0
+        while cur.next:
+            flag = 1
+            temp = dummy
+            for i in range(count):
+                if temp.next.val > cur.next.val:
+                    temp.next, cur.next.next, cur.next = cur.next, temp.next, cur.next.next
+                    flag = 0
+                    count += 1
+                    break
+                else:
+                    temp = temp.next
+            if flag:
+                cur = cur.next
+                count += 1
+        return dummy.next
+```
