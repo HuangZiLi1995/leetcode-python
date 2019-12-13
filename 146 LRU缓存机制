@@ -1,0 +1,51 @@
+### 解题思路
+哈希（key：（节点（key,value）） + 头尾双指针 + 双向链表
+哈希用于查找节点，节点中存储key，方便逆向查找，从哈希表中删除key
+双指针+双向链表 便于 删除尾部 和 插入头部
+
+### 代码
+
+```python3
+class listNode:
+    def __init__(self, key=None, value=None):
+        self.key = key
+        self.value = value
+        self.pre = None
+        self.next = None
+
+class LRUCache:
+
+    def __init__(self, capacity: int):
+        self.record = {}
+        self.capacity = capacity
+        self.head = listNode()
+        self.tail = listNode()
+        self.head.next = self.tail
+        self.tail.pre = self.head
+        
+    def get(self, key: int) -> int:
+        if key in self.record.keys():
+            cur = self.record[key]
+            cur.pre.next, cur.next.pre = cur.next, cur.pre
+            headNext = self.head.next
+            self.head.next, cur.pre = cur, self.head
+            cur.next, headNext.pre = headNext, cur
+            return self.record[key].value
+        return -1
+        
+    def put(self, key: int, value: int) -> None:
+        if key in self.record.keys():
+            cur = self.record[key]
+            cur.value = value
+            cur.pre.next, cur.next.pre = cur.next, cur.pre
+        else:
+            if len(self.record) == self.capacity:
+                self.record.pop(self.tail.pre.key)
+                self.tail.pre.pre.next, self.tail.pre = self.tail, self.tail.pre.pre
+            cur = listNode(key, value)
+            self.record[key] = cur
+        headNext = self.head.next
+        self.head.next, cur.pre = cur, self.head
+        cur.next, headNext.pre = headNext, cur
+        return
+```
