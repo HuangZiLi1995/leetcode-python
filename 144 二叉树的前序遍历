@@ -1,0 +1,26 @@
+### 解题思路
+前序遍历
+深度优先
+先根再左子树最后右子树
+
+时间复杂度O(n)
+空间复杂度O(n)
+
+### 代码
+
+```python3
+class Solution:
+    def preorderTraversal(self, root: TreeNode) -> List[int]:
+        
+        def preOrder(root):
+            if not root:
+                return []
+            re = [root.val]
+            if root.left:
+                re.extend(preOrder(root.left))
+            if root.right:
+                re.extend(preOrder(root.right))
+            return re
+        
+        return preOrder(root)
+```
