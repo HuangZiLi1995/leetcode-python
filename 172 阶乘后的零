@@ -1,0 +1,22 @@
+### 解题思路
+5*2 = 10
+而5倍数的个数一定少与2的倍数的个数，故只需确定共有多少个5即可
+递归
+  每5个数中有一个5
+  剩下来的数中依旧5个数中有一个5（即该数为25的倍数）
+  循环即可
+
+时间复杂度O(log(n))
+空间复杂度O(1)
+
+### 代码
+
+```python3
+class Solution:
+    def trailingZeroes(self, n: int) -> int:
+        res = 0
+        while n:
+            n //= 5
+            res += n
+        return res
+```
