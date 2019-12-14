@@ -1,0 +1,26 @@
+### 解题思路
+本题可以重复，因为找的为旋转点，是否旋转只需判断两端值得大小即可
+故只需处理右端与nums[0]重复的值，
+之后采用与第153题一样的方法即可
+
+时间复杂度O(N)
+空间复杂度O(1)
+
+### 代码
+
+```python3
+class Solution:
+    def findMin(self, nums: List[int]) -> int:
+        if not nums: return None
+        l, r = 0, len(nums)-1
+        while r>0 and nums[r]==nums[0]:
+            r -= 1
+        if nums[0]<nums[r]: return nums[0]
+        while l < r:
+            m = (l+r)//2
+            if nums[m] >= nums[0]:
+                l = m+1
+            else:
+                r = m
+        return nums[l]
+```
