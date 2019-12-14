@@ -1,0 +1,29 @@
+### 解题思路
+1.处理符号位
+2.整数位
+3.小数位
+  需要判断是否循环则需记录，每次的余数，若余数出现过，则将循环
+  找到上一次出现这个余数的位置，将从这一位开始循环，一直到最后一位
+
+### 代码
+
+```python3
+class Solution:
+    def fractionToDecimal(self, numerator: int, denominator: int) -> str:
+        quotient = '-' if numerator*denominator<0 else ''
+        numerator, denominator = abs(numerator), abs(denominator)
+        quotient += str(numerator//denominator)
+        reminder = numerator % denominator
+        if not reminder: return quotient
+        memo, i, decimal = [reminder], None, []
+        while reminder and i==None:
+            reminder *= 10
+            decimal.append(str(reminder//denominator))
+            reminder %= denominator
+            if reminder in memo:
+                i = memo.index(reminder)
+            memo.append(reminder)
+        if i == None:
+            return quotient+'.'+''.join(decimal)
+        return quotient+'.'+''.join(decimal[:i])+'('+''.join(decimal[i:])+')'
+```
