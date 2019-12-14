@@ -1,0 +1,18 @@
+### 解题思路
+遍历数组，计数，如果超过半数，则返回
+
+时间复杂度O(N)
+空间复杂度O(N)
+
+### 代码
+
+```python3
+class Solution:
+    def majorityElement(self, nums: List[int]) -> int:
+        n, memo = len(nums)/2, {}
+        for num in nums:
+            memo[num] = memo.get(num,0) + 1
+            if memo[num] > n:
+                return num
+        return None
+```
