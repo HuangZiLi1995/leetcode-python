@@ -1,0 +1,28 @@
+### 解题思路
+可发现，版本号先比较前面的字符，若相等才需比较后面的字符
+先split('.')
+再比较v1与v2共有的字段，若比出大小则返回，不能则继续比较
+共有字段比完后无结果，且其中一个还有剩余字符，则看剩余字符是否全完0即可
+
+### 代码
+
+```python3
+class Solution:
+    def compareVersion(self, version1: str, version2: str) -> int:
+        v1 = version1.split('.')
+        v2 = version2.split('.')
+        for i in range(min(len(v1),len(v2))):
+            if int(v1[i]) > int(v2[i]):
+                return 1
+            if int(v1[i]) < int(v2[i]):
+                return -1
+        if len(v1) > len(v2):
+            for i in range(len(v2), len(v1)):
+                if int(v1[i]) > 0:
+                    return 1
+        if len(v2) > len(v1):
+            for i in range(len(v1), len(v2)):
+                if int(v2[i]) > 0:
+                    return -1
+        return 0
+```
