@@ -1,0 +1,45 @@
+### 解题思路
+两个数组
+一个记录输入的数
+一个记录记录当前位置最小的数即，stack[i]=min(nums[:i+1])
+
+对stack优化：
+当输入数<=stack[-1]时才加入stack中
+同样，当弹出数==stack[-1]时才弹出stack[-1]
+
+### 代码
+
+```python3
+class MinStack:
+
+    def __init__(self):
+        self.nums = []
+        self.stack = []
+        
+    def push(self, x: int) -> None:
+        self.nums.append(x)
+        if not self.stack or self.stack[-1]>=x:
+            self.stack.append(x)
+
+    def pop(self) -> None:
+        if self.stack[-1] == self.nums.pop():
+            self.stack.pop()
+
+    def top(self) -> int:
+        if self.nums:
+            return self.nums[-1]
+        return None
+
+    def getMin(self) -> int:
+        if self.stack:
+            return self.stack[-1]
+        return None
+
+
+# Your MinStack object will be instantiated and called as such:
+# obj = MinStack()
+# obj.push(x)
+# obj.pop()
+# param_3 = obj.top()
+# param_4 = obj.getMin()
+```
