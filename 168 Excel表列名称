@@ -1,0 +1,16 @@
+### 解题思路
+迭代
+与十进制转二进制的处理方法类似
+不过这里是26进制
+
+### 代码
+
+```python3
+class Solution:
+    def convertToTitle(self, n: int) -> str:
+        res = ''
+        while n:
+            res = chr(ord('A')+(n-1)%26) + res
+            n = (n-1)//26
+        return res
+```
