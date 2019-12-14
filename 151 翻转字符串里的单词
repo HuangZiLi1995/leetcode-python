@@ -1,0 +1,17 @@
+### 解题思路
+先split
+去掉空字符（可能多个空格连着）
+再用空格连接
+
+时间复杂度O(n)
+空间复杂度O(n)
+
+### 代码
+
+```python3
+class Solution:
+    def reverseWords(self, s: str) -> str:
+        words = s.strip().split(' ')[::-1]
+        words = [word for word in words if word]
+        return ' '.join(words)
+```
