@@ -16,3 +16,29 @@ class Solution:
             res = max(nums[i]-nums[i-1],res)
         return res
 ```
+### 解题思路
+桶排序
+
+时间复杂度O(n)
+空间复杂度O(n)
+
+### 代码
+
+```python3
+class Solution:
+    def maximumGap(self, nums: List[int]) -> int:
+        n = len(nums)
+        if n<2: return 0
+        minNum, maxNum = min(nums), max(nums)
+        if minNum==maxNum: return 0
+        buckets, interval = {i:[] for i in range(n)}, math.ceil((maxNum-minNum)/(n-1))
+        for num in nums:
+            i = (num-minNum)//interval
+            buckets[i].append(num)
+        res, premax = 0, max(buckets[0])
+        for i in range(1,n):
+            if not buckets[i]: continue
+            res = max(res, min(buckets[i])-premax)
+            premax = max(buckets[i])
+        return res
+```
