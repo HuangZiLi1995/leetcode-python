@@ -1,0 +1,18 @@
+### 解题思路
+先排序再遍历
+
+时间复杂度O(nlog(n))
+空间复杂度O(1)
+
+### 代码
+
+```python3
+class Solution:
+    def maximumGap(self, nums: List[int]) -> int:
+        if len(nums)<2: return 0
+        nums.sort()
+        res = nums[1]-nums[0]
+        for i in range(2,len(nums)):
+            res = max(nums[i]-nums[i-1],res)
+        return res
+```
