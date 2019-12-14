@@ -1,0 +1,50 @@
+### 解题思路
+遍历A，记录A中所有节点
+遍历B，检查是否在A中出现过
+
+优化：哈希表记录A中节点
+
+时间复杂度O(len(A)+len(B))
+空间复杂度O(len(A))
+
+### 代码
+
+```python3
+class Solution:
+    def getIntersectionNode(self, headA: ListNode, headB: ListNode) -> ListNode:
+        A, cur = set(), headA
+        while cur:
+            A.add(cur)
+            cur = cur.next
+        cur = headB
+        while cur:
+            if cur in A:
+                return cur
+            cur = cur.next
+        return None
+```
+
+### 解题思路
+双指针 a，b
+a 遍历 headA + headB
+b 遍历 headB + headA
+若相交，则其结尾相交的节点相同
+故当a==b时，即为相交处
+
+### 代码
+
+```python3
+class Solution:
+    def getIntersectionNode(self, headA: ListNode, headB: ListNode) -> ListNode:
+        a, b = headA, headB
+        while a != b:
+            if a == None:
+                a = headB
+            else:
+                a = a.next
+            if b == None:
+                b = headA
+            else:
+                b = b.next
+        return a
+```
