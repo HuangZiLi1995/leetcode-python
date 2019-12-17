@@ -1,0 +1,20 @@
+### 解题思路
+滑动窗口
+首先去前十个字符，再向右滑动遍历整个字符串
+记录每次的十个字符及其出现的次数
+若出现的次数超过1次则返回
+
+时间复杂度O(n)
+空间复杂度O(n)
+
+### 代码
+
+```python3
+class Solution:
+    def findRepeatedDnaSequences(self, s: str) -> List[str]:
+        if len(s) <= 10: return []
+        record = {}
+        for i in range(10,len(s)+1):
+            record[s[i-10:i]] = record.get(s[i-10:i],0)+1
+        return [key for key in record.keys() if record[key]>1]
+```
