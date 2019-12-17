@@ -1,0 +1,18 @@
+### 解题思路
+直接用该定义，定义排序方法
+
+时间复杂度O(nlog(n))
+空间复杂度O(n)
+
+### 代码
+
+```python3
+class Solution:
+    def largestNumber(self, nums: List[int]) -> str:
+        from functools import cmp_to_key
+        if not nums: return ''
+        nums = [str(num) for num in nums]
+        key = cmp_to_key(lambda x, y: int(y + x) - int(x + y))
+        res = ''.join(sorted(nums, key=key)).lstrip('0')
+        return res or '0'
+```
