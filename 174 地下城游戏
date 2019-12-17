@@ -1,0 +1,35 @@
+### 解题思路
+动态规划
+自底向上
+[i][j] 到 [-1][-1]所需的最小值与以下位置相关
+1.向右到达的[i][j+1] 
+2.向下到达的[i+1][j]
+向右走一下后需要留出[i][j+1]需要的最小值，即向右移动需要dp[i][j+1]-dungeon[i][j]
+向下走一下后需要留出[i+1][j]需要的最小值，即向下移动需要dp[i+1][j]-dungeon[i][j]
+
+时间复杂度O(n*m)
+空间复杂度O(n*m)
+
+### 代码
+
+```python3
+class Solution:        
+    def calculateMinimumHP(self, dungeon: List[List[int]]) -> int:
+        n, m = len(dungeon), len(dungeon[0])
+        dp = [[None]*m for _ in range(n)]
+        for i in range(n-1,-1,-1):
+            for j in range(m-1,-1,-1):
+                if i==n-1 and j==m-1:
+                    dp[i][j] = max(1, -dungeon[i][j]+1)
+                    continue
+                if i < n-1:
+                    down = max(1, dp[i+1][j]-dungeon[i][j])
+                else:
+                    down = float('inf')
+                if j < m-1:
+                    right = max(1, dp[i][j+1]-dungeon[i][j])
+                else:
+                    right = float('inf')
+                dp[i][j] = min(down, right)
+        return dp[0][0]
+```
