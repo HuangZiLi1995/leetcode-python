@@ -1,0 +1,34 @@
+### 解题思路
+动态规划
+每一天的状态之和前一天的状态有关
+第i次交易的状态之和第i-1次交易的状态有关
+故只存保存前一天的状态，倒序更新即可
+状态转移方程为（1.持有，0.不持有股票）
+持有股票=较大值（前一天持有股票，前一天不持有股票+买入股票）
+dp[j][1] = max(dp[j][1],dp[j][0]-prices[i])
+不持有股票=较大值（前一天不持有股票，前一天持有股票+卖入股票）
+dp[j][0] = max(dp[j][0],dp[j-1][1]+prices[i])
+dp[0][0] = 0(不用更新)
+
+时间复杂度O(len(prices))
+空间复杂度O(k)
+
+### 代码
+
+```python3
+class Solution:
+    def maxProfit(self, k: int, prices: List[int]) -> int:
+        if not prices: return 0
+        if len(prices) < k*2:
+            differ = [prices[i]-prices[i-1] for i in range(1,len(prices))]
+            return sum([d for d in differ if d>0])
+        dp = [[0,0] for i in range(k+1)]
+        for i in range(k):
+            dp[i][1] = -prices[0]
+        for i in range(1,len(prices)):
+            for j in range(k,0,-1):
+                dp[j][1] = max(dp[j][1],dp[j][0]-prices[i])
+                dp[j][0] = max(dp[j][0],dp[j-1][1]+prices[i])
+            dp[0][1] = max(dp[0][1],-prices[i])
+        return dp[k][0]
+```
